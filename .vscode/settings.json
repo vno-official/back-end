@@ -1,0 +1,42 @@
+{
+  "java.project.referencedLibraries": [
+    "src/common/build/libs/*.jar",
+    "src/service-discovery/build/libs/*.jar",
+    "src/config-server/build/libs/*.jar",
+    "src/auth-service/build/libs/*.jar",
+    "src/user-service/build/libs/*.jar",
+    "src/api-gateway/build/libs/*.jar",
+    "src/organization-service/build/libs/*.jar",
+    "src/note-service/build/libs/*.jar",
+    "src/tag-service/build/libs/*.jar",
+    "src/notification-service/build/libs/*.jar"
+  ],
+  "java.project.sourcePaths": [
+    "src/common/src/main/java",
+    "src/common/src/test/java",
+    "src/config-server/src/main/java",
+    "src/config-server/src/test/java",
+    "src/service-discovery/src/main/java",
+    "src/service-discovery/src/test/java",
+    "src/auth-service/src/main/java",
+    "src/auth-service/src/test/java",
+    "src/user-service/src/main/java",
+    "src/user-service/src/test/java",
+    "src/api-gateway/src/main/java",
+    "src/api-gateway/src/test/java",
+    "src/organization-service/src/main/java",
+    "src/organization-service/src/test/java",
+    "src/note-service/src/main/java",
+    "src/note-service/src/test/java",
+    "src/tag-service/src/main/java",
+    "src/tag-service/src/test/java",
+    "src/notification-service/src/main/java",
+    "src/notification-service/src/test/java"
+  ],
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.compile.nullAnalysis.mode": "disabled",
+  "task.allowAutomaticTasks": "on",
+  "tasks.onTaskStart": "echo 🚀 Starting Microservices...",
+  "terminal.integrated.scrollback": 10000,
+  "terminal.integrated.cursorBlinking": true
+}

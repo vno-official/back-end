@@ -1,0 +1,5 @@
+jwt:
+  secret: dGhpc2lzYXZlcnlzZWNyZXRrZXl0aGF0c2hvdWxkYmVjaGFuZ2VkaW5wcm9kdWN0aW9uMTIzNDU2Nzg5MA==
+  issuer: vno-auth-service
+  access-token-expiration: 3600000
+  refresh-token-expiration: 604800000

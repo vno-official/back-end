@@ -1,0 +1,60 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - RewritePath=/api/users/(?<segment>.*), /${segment}
+
+        - id: note-service
+          uri: lb://note-service
+          predicates:
+            - Path=/api/notes/**
+          filters:
+            - RewritePath=/api/notes/(?<segment>.*), /${segment}
+
+        - id: tag-service
+          uri: lb://tag-service
+          predicates:
+            - Path=/api/tags/**
+          filters:
+            - RewritePath=/api/tags/(?<segment>.*), /${segment}
+
+        - id: organization-service
+          uri: lb://organization-service
+          predicates:
+            - Path=/api/organizations/**
+          filters:
+            - RewritePath=/api/organizations/(?<segment>.*), /${segment}
+
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/notifications/**,/ws/notifications
+          filters:
+            - RewritePath=/api/notifications/(?<segment>.*), /${segment}
+
+jwt:
+  secret: ${JWT_SECRET:dGhpc2lzYXZlcnlzZWNyZXRrZXl0aGF0c2hvdWxkYmVjaGFuZ2VkaW5wcm9kdWN0aW9uMTIzNDU2Nzg5MA==}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_URL:http://eureka:eureka-secret@localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true

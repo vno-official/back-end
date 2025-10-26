@@ -1,0 +1,17 @@
+rootProject.name = 'vno-backend-v2'
+
+// Core services
+include 'api-gateway'
+include 'auth-service'
+include 'user-service'
+include 'organization-service'
+include 'note-service'
+include 'tag-service'
+include 'notification-service'
+
+// Infrastructure
+include 'service-discovery'
+include 'config-server'
+
+// Shared modules
+include 'common'

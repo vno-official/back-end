@@ -1,0 +1,233 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "🚀 Start All Microservices",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "📡 Start Service Discovery",
+                "🌐 Open Eureka Health Page",
+                "⚙️ Start Config Server",
+                "🔐 Start Auth Service",
+                "👥 Start User Service",
+                "🌐 Start API Gateway"
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "📡 Start Service Discovery",
+            "type": "shell",
+            "command": "./gradlew.bat",
+            "args": [
+                ":src:service-discovery:bootRun"
+            ],
+            "group": "build",
+            "isBackground": true,
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*Started ServiceDiscoveryApplication.*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "🌐 Open Eureka Health Page",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "Start-Process",
+                "http://localhost:8761/actuator/health"
+            ],
+            "dependsOn": "📡 Start Service Discovery",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "never",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "⚙️ Start Config Server",
+            "type": "shell",
+            "command": "./gradlew.bat",
+            "args": [
+                ":src:config-server:bootRun"
+            ],
+            "group": "build",
+            "isBackground": true,
+            "dependsOn": "✅ Check Eureka Health",
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*Started ConfigServerApplication.*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "🔐 Start Auth Service",
+            "type": "shell",
+            "command": "./gradlew.bat",
+            "args": [
+                ":src:auth-service:bootRun"
+            ],
+            "group": "build",
+            "isBackground": true,
+            "dependsOn": [
+                "📡 Start Service Discovery",
+                "⚙️ Start Config Server"
+            ],
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*Started AuthServiceApplication.*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "👥 Start User Service",
+            "type": "shell",
+            "command": "./gradlew.bat",
+            "args": [
+                ":src:user-service:bootRun"
+            ],
+            "group": "build",
+            "isBackground": true,
+            "dependsOn": "🔐 Start Auth Service",
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*Started UserServiceApplication.*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "🌐 Start API Gateway",
+            "type": "shell",
+            "command": "./gradlew.bat",
+            "args": [
+                ":src:api-gateway:bootRun"
+            ],
+            "group": "build",
+            "isBackground": true,
+            "dependsOn": "👥 Start User Service",
+            "problemMatcher": [
+                {
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*Started ApiGatewayApplication.*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        {
+            "label": "🛑 Stop All Services",
+            "type": "shell",
+            "command": "taskkill",
+            "args": [
+                "/f",
+                "/im",
+                "java.exe"
+            ],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            }
+        }
+    ]
+}

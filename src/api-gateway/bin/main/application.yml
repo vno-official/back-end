@@ -1,0 +1,55 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+  config:
+    import: "optional:configserver:http://config:config123@localhost:8888"
+  cloud:
+    gateway:
+      routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**
+        - id: note-service
+          uri: lb://note-service
+          predicates:
+            - Path=/api/notes/**
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    urls:
+      - name: auth-service
+        url: /api/auth/v3/api-docs
+      - name: user-service
+        url: /api/users/v3/api-docs
+      - name: note-service
+        url: /api/notes/v3/api-docs
+      - name: tag-service
+        url: /api/tags/v3/api-docs
+      - name: organization-service
+        url: /api/organizations/v3/api-docs
+      - name: notification-service
+        url: /api/notifications/v3/api-docs
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:eureka-secret@localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true

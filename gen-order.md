@@ -1,0 +1,10 @@
+1. common
+2. config-server
+3. service-discovery
+4. auth-service
+5. user-service
+6. api-gateway
+7. organization-service
+7. note-service
+8. tag-service
+9. notification-service

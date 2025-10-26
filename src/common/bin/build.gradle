@@ -1,0 +1,24 @@
+dependencies {
+    // Common DTOs and utilities
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    
+    // MapStruct
+    implementation 'org.mapstruct:mapstruct'
+    annotationProcessor 'org.mapstruct:mapstruct-processor'
+    
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+// Configure MapStruct to use Spring's component model
+compileJava {
+    options.compilerArgs = [
+        '-Amapstruct.defaultComponentModel=spring'
+    ]
+}
