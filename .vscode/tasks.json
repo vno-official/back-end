@@ -228,6 +228,18 @@
                 "focus": false,
                 "panel": "shared"
             }
+        },
+        {
+            "label": "🧹 Clean All Services",
+            "type": "shell",
+            "command": "${workspaceFolder}/clean-all.bat",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "panel": "shared",
+                "focus": false
+            },
+            "problemMatcher": []
         }
     ]
 }
