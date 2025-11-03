@@ -5,6 +5,12 @@ spring:
   application:
     name: service-discovery
 
+
+management:
+  zipkin:
+    tracing:
+      enabled: false
+      
 eureka:
   instance:
     hostname: localhost

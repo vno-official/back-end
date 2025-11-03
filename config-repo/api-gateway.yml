@@ -58,3 +58,17 @@ eureka:
     fetch-registry: true
   instance:
     prefer-ip-address: true
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,openapi,swagger-ui  # thêm openapi + swagger-ui
+  info:
+    env:
+      enabled: true  # enable /actuator/info
+  endpoint:
+    health:
+      show-details: always

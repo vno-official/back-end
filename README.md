@@ -145,9 +145,7 @@ test
 │  │  │  │  │        │  ├─ UserRepository.class
 │  │  │  │  │        │  └─ UserSessionRepository.class
 │  │  │  │  │        ├─ security
-│  │  │  │  │        │  ├─ JwtAuthenticationFilter.class
-│  │  │  │  │        │  ├─ JwtService.class
-│  │  │  │  │        │  └─ SecurityConfig.class
+│  │  │  │  │        │  └─ JwtService.class
 │  │  │  │  │        ├─ service
 │  │  │  │  │        │  ├─ AuthService.class
 │  │  │  │  │        │  └─ impl
@@ -269,9 +267,7 @@ test
 │  │        │           │  ├─ UserRepository.java
 │  │        │           │  └─ UserSessionRepository.java
 │  │        │           ├─ security
-│  │        │           │  ├─ JwtAuthenticationFilter.java
-│  │        │           │  ├─ JwtService.java
-│  │        │           │  └─ SecurityConfig.java
+│  │        │           │  └─ JwtService.java
 │  │        │           ├─ service
 │  │        │           │  ├─ AuthService.java
 │  │        │           │  └─ impl
@@ -401,8 +397,7 @@ test
 │  │  │        └─ vno
 │  │  │           └─ note
 │  │  │              ├─ config
-│  │  │              │  ├─ OpenApiConfig.class
-│  │  │              │  └─ SecurityConfig.class
+│  │  │              │  └─ OpenApiConfig.class
 │  │  │              ├─ controller
 │  │  │              │  ├─ NoteController$Note.class
 │  │  │              │  └─ NoteController.class
@@ -646,8 +641,7 @@ test
 │     │     │     └─ user
 │     │     │        ├─ config
 │     │     │        │  ├─ OpenApiConfig.class
-│     │     │        │  ├─ PasswordConfig.class
-│     │     │        │  └─ SecurityConfig.class
+│     │     │        │  └─ PasswordConfig.class
 │     │     │        ├─ controller
 │     │     │        │  ├─ InternalAuthController$UserInfo.class
 │     │     │        │  ├─ InternalAuthController$VerifyRequest.class

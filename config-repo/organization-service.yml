@@ -21,3 +21,16 @@ eureka:
 
 jwt:
   secret: ${JWT_SECRET:your-256-bit-secret-key-here-make-it-long-enough}
+
+  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,openapi,swagger-ui  # thêm openapi + swagger-ui
+  info:
+    env:
+      enabled: true  # enable /actuator/info
+  endpoint:
+    health:
+      show-details: always

@@ -23,7 +23,11 @@ spring:
           uri: lb://note-service
           predicates:
             - Path=/api/notes/**
-
+  security:
+      user:
+        name: admin
+        password: 123456
+ 
 springdoc:
   api-docs:
     enabled: true
@@ -43,6 +47,10 @@ springdoc:
         url: /api/organizations/v3/api-docs
       - name: notification-service
         url: /api/notifications/v3/api-docs
+
+management:
+  tracing:
+    enabled: false
 
 
 eureka:

@@ -44,6 +44,8 @@ management:
     export:
       prometheus:
         enabled: true
+  tracing:
+    enabled: false
 
 # Common logging
 logging:

@@ -59,3 +59,24 @@ logging:
     com.vno.auth: DEBUG
     org.springframework.security: DEBUG
     org.hibernate.SQL: DEBUG
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html                  # UI tại: /swagger-ui.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs                      # JSON tại: /v3/api-docs
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,openapi,swagger-ui  # bật các endpoint này
+  info:
+    env:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always

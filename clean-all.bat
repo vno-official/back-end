@@ -1,26 +1,66 @@
 @echo off
-title Clean All Spring Boot Microservices
+title Clean All + Cache Killer
+color 0A
+echo.
 echo =====================================================
-echo       Cleaning all services (Gradle clean build)
+echo       CLEAN ALL + GRADLE CACHE + DOCKER CACHE
 echo =====================================================
+echo.
 
-REM --- List of all your modules ---
-set MODULES=src:config-server src:service-discovery src:api-gateway src:auth-service src:user-service src:note-service src:common
+REM --- Danh sách modules ---
+set MODULES=src:config-server src:service-discovery src:api-gateway src:auth-service src:user-service src:note-service src:tag-service src:notification-service src:organization-service src:common
 
-REM --- Loop through each module and clean ---
+echo [1/5] Cleaning Gradle modules...
 for %%M in (%MODULES%) do (
     echo.
-    echo Cleaning %%M ...
+    echo   Cleaning %%M ...
     call .\gradlew.bat :%%M:clean
     if %errorlevel% neq 0 (
-        echo ❌ Failed to clean %%M
+        echo.
+        echo ❌ FAILED: %%M
         pause
         exit /b %errorlevel%
     )
 )
+echo   All modules cleaned!
+
+echo.
+echo [2/5] Deleting root build folders...
+if exist build rmdir /s /q build
+if exist .gradle rmdir /s /q .gradle
+echo   Root build + .gradle deleted!
+
+echo.
+echo [3/5] Clearing Gradle global cache...
+set GRADLE_USER_HOME=%USERPROFILE%\.gradle
+if exist "%GRADLE_USER_HOME%\caches" (
+    echo   Deleting %GRADLE_USER_HOME%\caches ...
+    rmdir /s /q "%GRADLE_USER_HOME%\caches"
+)
+if exist "%GRADLE_USER_HOME%\wrapper" (
+    echo   Deleting %GRADLE_USER_HOME%\wrapper\dists ...
+    rmdir /s /q "%GRADLE_USER_HOME%\wrapper\dists"
+)
+echo   Global Gradle cache cleared!
+
+echo.
+echo [4/5] Pruning Docker build cache (if Docker exists)...
+docker builder prune -f >nul 2>&1
+if %errorlevel% equ 0 (
+    echo   Docker build cache pruned!
+) else (
+    echo   Docker not found or no cache to prune.
+)
+
+echo.
+echo [5/5] Optional: Clear IntelliJ/Eclipse caches (manual)...
+echo   - Close IDE
+echo   - Delete: .idea/ or .settings/ + *.iml
+echo   - Or run: gradlew --no-daemon clean
 
 echo.
 echo =====================================================
-echo All modules cleaned successfully!
+echo       ALL CLEANED SUCCESSFULLY!
+echo       Safe to rebuild: ./gradlew build
 echo =====================================================
 pause

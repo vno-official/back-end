@@ -21,6 +21,10 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
   flyway:
     enabled: false
+  security:
+    user:
+      name: admin
+      password: 123456
 
 springdoc:
   api-docs:
@@ -42,6 +46,12 @@ eureka:
     fetch-registry: true
   instance:
     prefer-ip-address: true
+
+
+
+management:
+  tracing:
+    enabled: false
 
 
 jwt:
