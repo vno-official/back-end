@@ -215,11 +215,10 @@
         {
             "label": "🛑 Stop All Services",
             "type": "shell",
-            "command": "taskkill",
+            "command": "cmd",
             "args": [
-                "/f",
-                "/im",
-                "java.exe"
+                "/c",
+                "for /f \"tokens=1\" %a in ('jps -l ^| find \"com.vno\"') do taskkill /PID %a /F"
             ],
             "group": "build",
             "presentation": {
@@ -227,7 +226,8 @@
                 "reveal": "always",
                 "focus": false,
                 "panel": "shared"
-            }
+            },
+            "problemMatcher": []
         },
         {
             "label": "🧹 Clean All Services",
