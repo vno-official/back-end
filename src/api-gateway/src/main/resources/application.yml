@@ -36,17 +36,18 @@ springdoc:
     path: /swagger-ui.html
     urls:
       - name: auth-service
-        url: /api/auth/v3/api-docs
+        url: /auth/v3/api-docs
       - name: user-service
-        url: /api/users/v3/api-docs
+        url: /users/v3/api-docs
       - name: note-service
-        url: /api/notes/v3/api-docs
+        url: /notes/v3/api-docs
       - name: tag-service
-        url: /api/tags/v3/api-docs
+        url: /tags/v3/api-docs
       - name: organization-service
-        url: /api/organizations/v3/api-docs
+        url: /organizations/v3/api-docs
       - name: notification-service
-        url: /api/notifications/v3/api-docs
+        url: /notifications/v3/api-docs
+
 
 management:
   tracing:
