@@ -6,18 +6,19 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 
     implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
-
+    // THÊM DÒNG NÀY – BẮT BUỘC CHO JWT VALIDATION
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
     // --- Circuit Breaker ---
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j'
 
-    // --- Config Server client (optional nhưng nên có nếu dùng config-server) ---
+    // --- Config Server client ---
     implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
-    // --- Actuator (for health checks & metrics) ---
+    // --- Actuator ---
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
 
     // --- JWT ---
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
@@ -31,10 +32,4 @@ dependencies {
     // --- Testing ---
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
-}
-
-// --- Jar output config ---
-bootJar {
-    archiveFileName = "api-gateway.jar"
-    launchScript()
 }

@@ -27,9 +27,13 @@ spring:
           filters:
             - RewritePath=/api-docs/auth, /v3/api-docs
   security:
-      user:
-        name: admin
-        password: 123456
+    user:
+      name: admin
+      password: 123456
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/master/protocol/openid-connect/certs
  
 # application.yml của api-gateway
 springdoc:
