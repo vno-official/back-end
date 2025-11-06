@@ -11,18 +11,21 @@ spring:
   cloud:
     gateway:
       routes:
+        # Route cho API auth
         - id: auth-service
-          uri: lb://auth-service
+          uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/api/auth/**
-        - id: user-service
-          uri: lb://user-service
+            - Path=/auth/**
+          filters:
+            - RewritePath=/auth/(?<segment>.*), /api/auth/$\{segment}
+
+        # Route CHO SWAGGER: lấy /v3/api-docs từ auth-service
+        - id: auth-openapi
+          uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/api/users/**
-        - id: note-service
-          uri: lb://note-service
-          predicates:
-            - Path=/api/notes/**
+            - Path=/api-docs/auth
+          filters:
+            - RewritePath=/api-docs/auth, /v3/api-docs
   security:
       user:
         name: admin

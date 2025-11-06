@@ -11,43 +11,35 @@ spring:
   cloud:
     gateway:
       routes:
+        # Route cho API auth
         - id: auth-service
-          uri: lb://auth-service
+          uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/api/auth/**
-        - id: user-service
-          uri: lb://user-service
+            - Path=/auth/**
+          filters:
+            - RewritePath=/auth/(?<segment>.*), /api/auth/$\{segment}
+
+        # Route CHO SWAGGER: lấy /v3/api-docs từ auth-service
+        - id: auth-openapi
+          uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/api/users/**
-        - id: note-service
-          uri: lb://note-service
-          predicates:
-            - Path=/api/notes/**
+            - Path=/api-docs/auth
+          filters:
+            - RewritePath=/api-docs/auth, /v3/api-docs
   security:
       user:
         name: admin
         password: 123456
  
+# application.yml của api-gateway
 springdoc:
-  api-docs:
-    enabled: true
   swagger-ui:
-    enabled: true
     path: /swagger-ui.html
     urls:
-      - name: auth-service
-        url: /auth/v3/api-docs
-      - name: user-service
-        url: /users/v3/api-docs
-      - name: note-service
-        url: /notes/v3/api-docs
-      - name: tag-service
-        url: /tags/v3/api-docs
-      - name: organization-service
-        url: /organizations/v3/api-docs
-      - name: notification-service
-        url: /notifications/v3/api-docs
-
+      - name: Authentication
+        url: /api-docs/auth
+      - name: User Service
+        url: /api-docs/user
 
 management:
   tracing:
