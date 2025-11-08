@@ -7,10 +7,10 @@ echo ========================================
 
 echo Starting all services... This may take a few minutes.
 
-start "Service Discovery" cmd /k ".\gradlew.bat :src:service-discovery:bootRun && Service Discovery Ready!"
+start "Service Discovery" cmd /k ".\gradlew.bat :service-discovery:bootRun && Service Discovery Ready!"
 timeout /t 10 >nul
 
-start "Config Server" cmd /k ".\gradlew.bat :src:config-server:bootRun && Config Server Ready!"
+start "Config Server" cmd /k ".\gradlew.bat :config-server:bootRun && Config Server Ready!"
 timeout /t 5 >nul
 
 start "Auth Service" cmd /k ".\gradlew.bat :src:auth-service:bootRun && Auth Service Ready!"

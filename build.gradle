@@ -1,7 +1,21 @@
+// build.gradle (root)
+buildscript {
+    ext {
+        springBootVersion = '3.5.6'
+        springCloudVersion = '2025.0.0'
+    }
+}
+
 plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}" apply false
+    id 'io.spring.dependency-management' version '1.1.5' apply false
 }
 
 allprojects {
+    group = 'com.vno'
+    version = '1.0.0-SNAPSHOT'
+
     repositories {
         mavenCentral()
     }
@@ -9,6 +23,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
 
     java {
         toolchain {
@@ -16,26 +31,32 @@ subprojects {
         }
     }
 
-    tasks.withType(Test).configureEach {
-        useJUnitPlatform()
-    }
-
-     // Force consistent versions
-    configurations.all {
-        resolutionStrategy {
-            // Force Spring versions
-            force 'org.springframework:spring-web:6.2.11'
-            force 'org.springframework:spring-webmvc:6.2.11'
-            force 'org.springframework:spring-core:6.2.11'
-            force 'org.springframework:spring-context:6.2.11'
-            
-            // Force Jackson versions  
-            force 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
-            force 'com.fasterxml.jackson.core:jackson-core:2.17.2'
-            force 'com.fasterxml.jackson.core:jackson-annotations:2.17.2'
-            
-            // Prefer newer versions
-            preferProjectModules()
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
         }
     }
+    dependencies {
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+    }
+}
+
+// Chỉ các service mới apply Spring Boot
+configure([project(':src:auth-service'),
+           project(':src:user-service'),
+           project(':src:api-gateway'),
+           project(':config-server'),
+           project(':service-discovery'),
+           project(':src:note-service'),
+           project(':src:organization-service')]) {
+    apply plugin: 'org.springframework.boot'
+}
+apply from: 'scripts/generate-contracts.gradle'
+
+// Task chạy tự động khi build
+tasks.named('build') {
+    dependsOn generateContracts
 }

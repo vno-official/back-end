@@ -1,6 +1,6 @@
 
 ```
-test
+vno-backend
 ├─ .qodo
 │  ├─ agents
 │  └─ workflows
@@ -9,6 +9,68 @@ test
 ├─ checklist.md
 ├─ classpath-auth-service.md
 ├─ clean-all.bat
+├─ common
+│  ├─ bin
+│  │  ├─ .project
+│  │  ├─ .settings
+│  │  │  └─ org.eclipse.jdt.core.prefs
+│  │  ├─ default
+│  │  ├─ generated-sources
+│  │  │  └─ annotations
+│  │  ├─ main
+│  │  │  ├─ application.yml
+│  │  │  └─ com
+│  │  │     └─ vno
+│  │  │        └─ common
+│  │  │           ├─ dto
+│  │  │           │  ├─ ApiResponse$ApiResponseBuilder.class
+│  │  │           │  ├─ ApiResponse.class
+│  │  │           │  ├─ ErrorResponse$ErrorResponseBuilder.class
+│  │  │           │  └─ ErrorResponse.class
+│  │  │           ├─ entity
+│  │  │           │  └─ BaseEntity.class
+│  │  │           ├─ exception
+│  │  │           │  ├─ BusinessException.class
+│  │  │           │  └─ GlobalExceptionHandler.class
+│  │  │           ├─ security
+│  │  │           │  └─ JwtUtil.class
+│  │  │           └─ ultil
+│  │  └─ src
+│  │     └─ main
+│  │        └─ java
+│  │           └─ com
+│  │              └─ vno
+│  │                 └─ common
+│  │                    ├─ dto
+│  │                    │  ├─ ApiResponse$ApiResponseBuilder.class
+│  │                    │  ├─ ApiResponse.class
+│  │                    │  ├─ ErrorResponse$ErrorResponseBuilder.class
+│  │                    │  └─ ErrorResponse.class
+│  │                    ├─ entity
+│  │                    │  └─ BaseEntity.class
+│  │                    ├─ exception
+│  │                    │  ├─ BusinessException.class
+│  │                    │  └─ GlobalExceptionHandler.class
+│  │                    └─ security
+│  │                       └─ JwtUtil.class
+│  └─ src
+│     └─ main
+│        ├─ java
+│        │  └─ com
+│        │     └─ vno
+│        │        └─ common
+│        │           ├─ dto
+│        │           │  ├─ ApiResponse.java
+│        │           │  └─ ErrorResponse.java
+│        │           ├─ entity
+│        │           │  └─ BaseEntity.java
+│        │           ├─ exception
+│        │           │  ├─ BusinessException.java
+│        │           │  └─ GlobalExceptionHandler.java
+│        │           ├─ security
+│        │           └─ ultil
+│        └─ resources
+│           └─ application.yml
 ├─ config-repo
 │  ├─ api-gateway.yml
 │  ├─ application.yml
@@ -20,6 +82,41 @@ test
 │  ├─ service-discovery.yml
 │  ├─ tag-service.yml
 │  └─ user-service.yml
+├─ config-server
+│  ├─ bin
+│  │  ├─ default
+│  │  ├─ generated-sources
+│  │  │  └─ annotations
+│  │  └─ main
+│  │     ├─ application.yml
+│  │     ├─ com
+│  │     │  └─ vno
+│  │     │     └─ config
+│  │     │        └─ ConfigServerApplication.class
+│  │     └─ config
+│  │        └─ auth-service.yml
+│  ├─ Dockerfile
+│  └─ src
+│     └─ main
+│        ├─ java
+│        │  └─ com
+│        │     └─ vno
+│        │        └─ config
+│        │           └─ ConfigServerApplication.java
+│        └─ resources
+│           ├─ application.yml
+│           └─ config
+│              └─ auth-service.yml
+├─ contracts
+│  ├─ asyncapi
+│  │  └─ user-events.yaml
+│  ├─ openapi
+│  │  ├─ auth-service.yaml
+│  │  ├─ gateway-aggregated.yaml
+│  │  └─ user-service.yaml
+│  └─ proto
+│     ├─ auth.proto
+│     └─ user.proto
 ├─ gen-order.md
 ├─ gradle
 │  ├─ libs.versions.toml
@@ -30,10 +127,36 @@ test
 ├─ gradlew
 ├─ gradlew.bat
 ├─ how-to-run.md
+├─ mermaid-diagram.svg
 ├─ README - Copy.md
 ├─ README.md
 ├─ run-all.bat
 ├─ run-order.md
+├─ scripts
+│  └─ setup-contracts.ps1
+├─ service-discovery
+│  ├─ bin
+│  │  ├─ default
+│  │  ├─ generated-sources
+│  │  │  └─ annotations
+│  │  └─ main
+│  │     ├─ application.yml
+│  │     └─ com
+│  │        └─ vno
+│  │           └─ eureka
+│  │              ├─ ServiceDiscoveryApplication$WebSecurityConfig.class
+│  │              └─ ServiceDiscoveryApplication.class
+│  ├─ docker-compose.yml
+│  ├─ Dockerfile
+│  └─ src
+│     └─ main
+│        ├─ java
+│        │  └─ com
+│        │     └─ vno
+│        │        └─ eureka
+│        │           └─ ServiceDiscoveryApplication.java
+│        └─ resources
+│           └─ application.yml
 ├─ SETUP.md
 ├─ src
 │  ├─ api-gateway
@@ -72,9 +195,13 @@ test
 │  │        │        └─ gateway
 │  │        │           ├─ ApiGatewayApplication.java
 │  │        │           ├─ config
-│  │        │           │  └─ GatewayConfig.java
-│  │        │           └─ filter
-│  │        │              └─ AuthFilter.java
+│  │        │           │  ├─ OpenApiConfig.java
+│  │        │           │  └─ SecurityConfig.java
+│  │        │           ├─ filter
+│  │        │           │  └─ AuthFilter.java
+│  │        │           └─ security
+│  │        │              ├─ JwtAuthenticationToken.java
+│  │        │              └─ JwtUtil.java
 │  │        └─ resources
 │  │           └─ application.yml
 │  ├─ auth-service
@@ -104,6 +231,7 @@ test
 │  │  │  │  │        │  ├─ JwtProperties$Token.class
 │  │  │  │  │        │  ├─ JwtProperties.class
 │  │  │  │  │        │  ├─ OpenApiConfig.class
+│  │  │  │  │        │  ├─ SecurityConfig.class
 │  │  │  │  │        │  └─ WebConfig.class
 │  │  │  │  │        ├─ controller
 │  │  │  │  │        │  └─ AuthController.class
@@ -236,8 +364,6 @@ test
 │  │        │           ├─ client
 │  │        │           │  └─ UserServiceClient.java
 │  │        │           ├─ config
-│  │        │           │  ├─ JwtConfig.java
-│  │        │           │  ├─ JwtProperties.java
 │  │        │           │  ├─ OpenApiConfig.java
 │  │        │           │  └─ WebConfig.java
 │  │        │           ├─ controller
@@ -257,6 +383,7 @@ test
 │  │        │           │  ├─ InvalidCredentialsException.java
 │  │        │           │  ├─ TokenRefreshException.java
 │  │        │           │  └─ UserAlreadyExistsException.java
+│  │        │           ├─ filter
 │  │        │           ├─ model
 │  │        │           │  ├─ RefreshToken.java
 │  │        │           │  ├─ Token.java
@@ -272,8 +399,10 @@ test
 │  │        │           │  ├─ AuthService.java
 │  │        │           │  └─ impl
 │  │        │           │     └─ AuthServiceImpl.java
-│  │        │           └─ task
-│  │        │              └─ CleanupExpiredSessionsTask.java
+│  │        │           ├─ task
+│  │        │           │  └─ CleanupExpiredSessionsTask.java
+│  │        │           └─ util
+│  │        │              └─ SecurityUtils.java
 │  │        └─ resources
 │  │           ├─ application.yml
 │  │           ├─ bootstrap.yml
@@ -283,106 +412,6 @@ test
 │  │                 │  └─ V1__init.sql
 │  │                 ├─ V1__create_refresh_tokens_table.sql
 │  │                 └─ V1__create_tables.sql
-│  ├─ bin
-│  │  ├─ default
-│  │  └─ generated-sources
-│  │     └─ annotations
-│  ├─ common
-│  │  ├─ bin
-│  │  │  ├─ .project
-│  │  │  ├─ .settings
-│  │  │  │  └─ org.eclipse.jdt.core.prefs
-│  │  │  ├─ default
-│  │  │  ├─ generated-sources
-│  │  │  │  └─ annotations
-│  │  │  ├─ main
-│  │  │  │  ├─ application.yml
-│  │  │  │  └─ com
-│  │  │  │     └─ vno
-│  │  │  │        └─ common
-│  │  │  │           ├─ dto
-│  │  │  │           │  ├─ ApiResponse$ApiResponseBuilder.class
-│  │  │  │           │  ├─ ApiResponse.class
-│  │  │  │           │  ├─ ErrorResponse$ErrorResponseBuilder.class
-│  │  │  │           │  └─ ErrorResponse.class
-│  │  │  │           ├─ entity
-│  │  │  │           │  └─ BaseEntity.class
-│  │  │  │           ├─ exception
-│  │  │  │           │  ├─ BusinessException.class
-│  │  │  │           │  └─ GlobalExceptionHandler.class
-│  │  │  │           ├─ security
-│  │  │  │           │  └─ JwtUtil.class
-│  │  │  │           └─ ultil
-│  │  │  └─ src
-│  │  │     └─ main
-│  │  │        └─ java
-│  │  │           └─ com
-│  │  │              └─ vno
-│  │  │                 └─ common
-│  │  │                    ├─ dto
-│  │  │                    │  ├─ ApiResponse$ApiResponseBuilder.class
-│  │  │                    │  ├─ ApiResponse.class
-│  │  │                    │  ├─ ErrorResponse$ErrorResponseBuilder.class
-│  │  │                    │  └─ ErrorResponse.class
-│  │  │                    ├─ entity
-│  │  │                    │  └─ BaseEntity.class
-│  │  │                    ├─ exception
-│  │  │                    │  ├─ BusinessException.class
-│  │  │                    │  └─ GlobalExceptionHandler.class
-│  │  │                    └─ security
-│  │  │                       └─ JwtUtil.class
-│  │  └─ src
-│  │     └─ main
-│  │        ├─ java
-│  │        │  └─ com
-│  │        │     └─ vno
-│  │        │        └─ common
-│  │        │           ├─ dto
-│  │        │           │  ├─ ApiResponse.java
-│  │        │           │  └─ ErrorResponse.java
-│  │        │           ├─ entity
-│  │        │           │  └─ BaseEntity.java
-│  │        │           ├─ exception
-│  │        │           │  ├─ BusinessException.java
-│  │        │           │  └─ GlobalExceptionHandler.java
-│  │        │           ├─ security
-│  │        │           │  └─ JwtUtil.java
-│  │        │           └─ ultil
-│  │        └─ resources
-│  │           └─ application.yml
-│  ├─ config-server
-│  │  ├─ bin
-│  │  │  ├─ default
-│  │  │  ├─ generated-sources
-│  │  │  │  └─ annotations
-│  │  │  └─ main
-│  │  │     ├─ application.yml
-│  │  │     ├─ com
-│  │  │     │  └─ vno
-│  │  │     │     └─ config
-│  │  │     │        └─ ConfigServerApplication.class
-│  │  │     └─ config
-│  │  │        └─ auth-service.yml
-│  │  ├─ Dockerfile
-│  │  └─ src
-│  │     └─ main
-│  │        ├─ java
-│  │        │  └─ com
-│  │        │     └─ vno
-│  │        │        └─ config
-│  │        │           └─ ConfigServerApplication.java
-│  │        └─ resources
-│  │           ├─ application.yml
-│  │           └─ config
-│  │              └─ auth-service.yml
-│  ├─ db
-│  │  └─ init
-│  │     └─ create_databases.sql
-│  ├─ demo
-│  ├─ docker-compose.yml
-│  ├─ gradle
-│  │  └─ wrapper
-│  │     └─ gradle-wrapper.properties
 │  ├─ note-service
 │  │  ├─ bin
 │  │  │  ├─ .project
@@ -409,13 +438,12 @@ test
 │  │        │     └─ vno
 │  │        │        └─ note
 │  │        │           ├─ config
-│  │        │           │  ├─ OpenApiConfig.java
-│  │        │           │  └─ SecurityConfig.java
+│  │        │           │  └─ OpenApiConfig.java
 │  │        │           ├─ controller
 │  │        │           │  └─ NoteController.java
 │  │        │           └─ NoteServiceApplication.java
 │  │        └─ resources
-│  │           └─ bootstrap.yml
+│  │           └─ application.yml
 │  ├─ notification-service
 │  │  ├─ bin
 │  │  │  ├─ .settings
@@ -460,11 +488,11 @@ test
 │  │        │     └─ vno
 │  │        │        └─ notification
 │  │        │           ├─ config
-│  │        │           │  └─ SecurityConfig.java
 │  │        │           ├─ controller
 │  │        │           │  └─ NotificationController.java
 │  │        │           └─ NotificationServiceApplication.java
 │  │        └─ resources
+│  │           ├─ application.yml
 │  │           └─ bootstrap.yml
 │  ├─ organization-service
 │  │  ├─ bin
@@ -524,67 +552,45 @@ test
 │  │  │                 └─ OrganizationService.class
 │  │  └─ src
 │  │     └─ main
-│  │        └─ java
-│  │           └─ com
-│  │              └─ vno
-│  │                 └─ organization
-│  │                    ├─ client
-│  │                    │  └─ UserServiceClient.java
-│  │                    ├─ dto
-│  │                    │  ├─ MemberRequest.java
-│  │                    │  ├─ MemberResponse.java
-│  │                    │  ├─ OrganizationRequest.java
-│  │                    │  └─ OrganizationResponse.java
-│  │                    ├─ exception
-│  │                    │  ├─ MemberAlreadyExistsException.java
-│  │                    │  ├─ MemberNotFoundException.java
-│  │                    │  ├─ OrganizationNotFoundException.java
-│  │                    │  └─ UnauthorizedAccessException.java
-│  │                    ├─ mapper
-│  │                    │  ├─ MemberMapper.java
-│  │                    │  └─ OrganizationMapper.java
-│  │                    ├─ model
-│  │                    │  ├─ enums
-│  │                    │  │  ├─ MemberRole.java
-│  │                    │  │  ├─ MemberStatus.java
-│  │                    │  │  └─ OrganizationStatus.java
-│  │                    │  ├─ Member.java
-│  │                    │  ├─ MemberId.java
-│  │                    │  └─ Organization.java
-│  │                    ├─ OrganizationServiceApplication.java
-│  │                    ├─ repository
-│  │                    │  ├─ MemberRepository.java
-│  │                    │  └─ OrganizationRepository.java
-│  │                    └─ service
-│  │                       ├─ impl
-│  │                       │  ├─ MemberServiceImpl.java
-│  │                       │  └─ OrganizationServiceImpl.java
-│  │                       ├─ MemberService.java
-│  │                       └─ OrganizationService.java
-│  ├─ service-discovery
-│  │  ├─ bin
-│  │  │  ├─ default
-│  │  │  ├─ generated-sources
-│  │  │  │  └─ annotations
-│  │  │  └─ main
-│  │  │     ├─ application.yml
-│  │  │     └─ com
-│  │  │        └─ vno
-│  │  │           └─ eureka
-│  │  │              ├─ ServiceDiscoveryApplication$WebSecurityConfig.class
-│  │  │              └─ ServiceDiscoveryApplication.class
-│  │  ├─ docker-compose.yml
-│  │  ├─ Dockerfile
-│  │  └─ src
-│  │     └─ main
 │  │        ├─ java
 │  │        │  └─ com
 │  │        │     └─ vno
-│  │        │        └─ eureka
-│  │        │           └─ ServiceDiscoveryApplication.java
+│  │        │        └─ organization
+│  │        │           ├─ client
+│  │        │           │  └─ UserServiceClient.java
+│  │        │           ├─ dto
+│  │        │           │  ├─ MemberRequest.java
+│  │        │           │  ├─ MemberResponse.java
+│  │        │           │  ├─ OrganizationRequest.java
+│  │        │           │  └─ OrganizationResponse.java
+│  │        │           ├─ exception
+│  │        │           │  ├─ MemberAlreadyExistsException.java
+│  │        │           │  ├─ MemberNotFoundException.java
+│  │        │           │  ├─ OrganizationNotFoundException.java
+│  │        │           │  └─ UnauthorizedAccessException.java
+│  │        │           ├─ mapper
+│  │        │           │  ├─ MemberMapper.java
+│  │        │           │  └─ OrganizationMapper.java
+│  │        │           ├─ model
+│  │        │           │  ├─ enums
+│  │        │           │  │  ├─ MemberRole.java
+│  │        │           │  │  ├─ MemberStatus.java
+│  │        │           │  │  └─ OrganizationStatus.java
+│  │        │           │  ├─ Member.java
+│  │        │           │  ├─ MemberId.java
+│  │        │           │  └─ Organization.java
+│  │        │           ├─ OrganizationServiceApplication.java
+│  │        │           ├─ repository
+│  │        │           │  ├─ MemberRepository.java
+│  │        │           │  └─ OrganizationRepository.java
+│  │        │           └─ service
+│  │        │              ├─ impl
+│  │        │              │  ├─ MemberServiceImpl.java
+│  │        │              │  └─ OrganizationServiceImpl.java
+│  │        │              ├─ MemberService.java
+│  │        │              └─ OrganizationService.java
 │  │        └─ resources
 │  │           └─ application.yml
-│  ├─ structure.md
 │  ├─ tag-service
 │  │  ├─ bin
 │  │  │  ├─ default
@@ -609,15 +615,12 @@ test
 │  │        │     └─ vno
 │  │        │        └─ tag
 │  │        │           ├─ config
-│  │        │           │  ├─ OpenApiConfig.java
-│  │        │           │  └─ SecurityConfig.java
+│  │        │           │  └─ OpenApiConfig.java
 │  │        │           ├─ controller
 │  │        │           │  └─ TagController.java
 │  │        │           └─ TagServiceApplication.java
 │  │        └─ resources
-│  │           └─ bootstrap.yml
-│  ├─ target.md
-│  ├─ todo.md
+│  │           └─ application.yml
 │  └─ user-service
 │     ├─ bin
 │     │  ├─ default
@@ -681,8 +684,7 @@ test
 │           │        └─ user
 │           │           ├─ config
 │           │           │  ├─ OpenApiConfig.java
-│           │           │  ├─ PasswordConfig.java
-│           │           │  └─ SecurityConfig.java
+│           │           │  └─ PasswordConfig.java
 │           │           ├─ controller
 │           │           │  ├─ InternalAuthController.java
 │           │           │  └─ UserController.java
@@ -714,6 +716,9 @@ test
 │              └─ db
 │                 └─ migration
 │                    └─ V1__create_users_table.sql
+├─ structure.md
+├─ target.md
+├─ todo.md
 └─ WARP.md
 
 ```

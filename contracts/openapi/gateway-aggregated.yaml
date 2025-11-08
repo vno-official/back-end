@@ -1,0 +1,7 @@
+﻿openapi: 3.0.3
+info:
+  title: Gateway Aggregated API
+  version: 1.0.0
+paths:
+  /auth/login:
+    $ref: './auth-service.yaml#/paths/~1login'

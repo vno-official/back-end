@@ -20,7 +20,7 @@
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
-                ":src:service-discovery:bootRun"
+                ":service-discovery:bootRun"
             ],
             "group": "build",
             "isBackground": true,
@@ -70,7 +70,7 @@
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
-                ":src:config-server:bootRun"
+                ":config-server:bootRun"
             ],
             "group": "build",
             "isBackground": true,

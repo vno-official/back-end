@@ -12,15 +12,15 @@ pluginManagement {
  * For more detailed information on multi-project builds, please refer to https://docs.gradle.org/9.1.0/userguide/multi_project_builds.html in the Gradle documentation.
  */
 
-rootProject.name = 'test'
+rootProject.name = 'vno-backend'
 
-include 'src:common'
-include 'src:config-server'
-include 'src:service-discovery'
+include 'common'
 include 'src:auth-service'
 include 'src:user-service'
-include 'src:api-gateway'
-include 'src:organization-service'
 include 'src:note-service'
 include 'src:tag-service'
+include 'src:organization-service'
 include 'src:notification-service'
+include 'src:api-gateway'
+include 'config-server'
+include 'service-discovery'

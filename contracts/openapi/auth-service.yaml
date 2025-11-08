@@ -1,0 +1,13 @@
+﻿openapi: 3.0.3
+info:
+  title: Auth Service API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8081/api/auth
+paths:
+  /login:
+    post:
+      summary: Login
+      responses:
+        '200':
+          description: OK

@@ -22,12 +22,16 @@ spring:
   flyway:
     enabled: false
 
+
 springdoc:
-  api-docs:
-    enabled: true
-    path: /v3/api-docs
   swagger-ui:
-    enabled: false  # tắt UI trong service
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  packages-to-scan: com.example.demo.controller
+  paths-to-match: /**
 
 
 logging:

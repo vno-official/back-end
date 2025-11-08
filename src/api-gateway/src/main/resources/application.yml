@@ -10,22 +10,22 @@ spring:
     import: "optional:configserver:http://config:config123@localhost:8888"
   cloud:
     gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
-        # Route cho API auth
         - id: auth-service
-          uri: lb://AUTH-SERVICE
+          uri: lb://auth-service
           predicates:
-            - Path=/auth/**
+            - Path=/api/auth/**
           filters:
-            - RewritePath=/auth/(?<segment>.*), /api/auth/$\{segment}
-
-        # Route CHO SWAGGER: lấy /v3/api-docs từ auth-service
-        - id: auth-openapi
-          uri: lb://AUTH-SERVICE
+            - StripPrefix=1
+        - id: user-service
+          uri: lb://user-service
           predicates:
-            - Path=/api-docs/auth
+            - Path=/api/users/**
           filters:
-            - RewritePath=/api-docs/auth, /v3/api-docs
+            - StripPrefix=1
+            - JwtAuthenticationFilter
   security:
     user:
       name: admin
@@ -41,9 +41,16 @@ springdoc:
     path: /swagger-ui.html
     urls:
       - name: Authentication
-        url: /api-docs/auth
-      - name: User Service
-        url: /api-docs/user
+        url: /v3/api-docs/auth
+    use-root-path: true
+    operations-sorter: method
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  webjars:
+    prefix: /webjars
+  cors:
+    enabled: true
 
 management:
   tracing:

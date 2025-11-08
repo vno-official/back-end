@@ -1,6 +1,5 @@
 package com.vno.gateway.filter;
 
-import com.vno.common.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,6 +15,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
+
+import com.vno.gateway.security.JwtUtil;
+
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
