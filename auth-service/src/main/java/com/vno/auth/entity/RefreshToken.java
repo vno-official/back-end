@@ -8,18 +8,19 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity(name = "LegacyAuthRefreshToken")
-@Table(
-    name = "auth_refresh_tokens_legacy",
-    indexes = {
-      @Index(name = "idx_legacy_token", columnList = "token"),
-      @Index(name = "idx_legacy_user_id", columnList = "userId")
-    })
+@Table(name = "auth_refresh_tokens_legacy", indexes = {
+    @Index(name = "idx_legacy_token", columnList = "token"),
+    @Index(name = "idx_legacy_user_id", columnList = "userId")
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class RefreshToken extends BaseEntity {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Column(nullable = false, unique = true)
   private String token;

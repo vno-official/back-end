@@ -2,33 +2,41 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "🚀 Start All Microservices",
+            "label": "Start All Microservices",
             "dependsOrder": "sequence",
             "dependsOn": [
-                "📡 Start Service Discovery",
-                "🌐 Open Eureka Health Page",
-                "⚙️ Start Config Server",
-                "🔐 Start Auth Service",
-                "👥 Start User Service",
-                "🌐 Start API Gateway"
+                "Start Service Discovery",
+                "Open Eureka Dashboard",
+                "Start Config Server",
+                "Start Auth Service",
+                "Start User Service",
+                "Start Organization Service",
+                "Start Note Service",
+                "Start Notification Service",
+                "Start Tag Service",
+                "Start API Gateway"
             ],
             "group": "build",
             "problemMatcher": []
         },
+        /* --------------------------------------------------------------- */
+        /*  SERVICE DISCOVERY (Eureka)                                    */
+        /* --------------------------------------------------------------- */
         {
-            "label": "📡 Start Service Discovery",
+            "label": "Start Service Discovery",
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
                 ":service-discovery:bootRun"
             ],
-            "group": "build",
             "isBackground": true,
+            "group": "build",
             "problemMatcher": [
                 {
+                    "owner": "spring",
                     "pattern": [
                         {
-                            "regexp": ".",
+                            "regexp": "^.*$",
                             "file": 1,
                             "location": 2,
                             "message": 3
@@ -51,35 +59,41 @@
             }
         },
         {
-            "label": "🌐 Open Eureka Health Page",
+            "label": "Open Eureka Dashboard",
             "type": "shell",
             "command": "powershell",
             "args": [
                 "Start-Process",
                 "http://localhost:8761"
             ],
-            "dependsOn": "📡 Start Service Discovery",
+            "dependsOn": "Start Service Discovery",
             "problemMatcher": [],
             "presentation": {
                 "reveal": "never",
                 "panel": "shared"
             }
         },
+        /* --------------------------------------------------------------- */
+        /*  CONFIG SERVER                                                 */
+        /* --------------------------------------------------------------- */
         {
-            "label": "⚙️ Start Config Server",
+            "label": "Start Config Server",
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
                 ":config-server:bootRun"
             ],
-            "group": "build",
             "isBackground": true,
-            "dependsOn": "✅ Check Eureka Health",
+            "group": "build",
+            "dependsOn": [
+                "Start Service Discovery"
+            ],
             "problemMatcher": [
                 {
+                    "owner": "spring",
                     "pattern": [
                         {
-                            "regexp": ".",
+                            "regexp": "^.*$",
                             "file": 1,
                             "location": 2,
                             "message": 3
@@ -101,24 +115,28 @@
                 "clear": false
             }
         },
+        /* --------------------------------------------------------------- */
+        /*  AUTH SERVICE                                                  */
+        /* --------------------------------------------------------------- */
         {
-            "label": "🔐 Start Auth Service",
+            "label": "Start Auth Service",
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
                 ":auth-service:bootRun"
             ],
-            "group": "build",
             "isBackground": true,
+            "group": "build",
             "dependsOn": [
-                "📡 Start Service Discovery",
-                "⚙️ Start Config Server"
+                "Start Service Discovery",
+                "Start Config Server"
             ],
             "problemMatcher": [
                 {
+                    "owner": "spring",
                     "pattern": [
                         {
-                            "regexp": ".",
+                            "regexp": "^.*$",
                             "file": 1,
                             "location": 2,
                             "message": 3
@@ -140,21 +158,27 @@
                 "clear": false
             }
         },
+        /* --------------------------------------------------------------- */
+        /*  USER SERVICE                                                  */
+        /* --------------------------------------------------------------- */
         {
-            "label": "👥 Start User Service",
+            "label": "Start User Service",
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
                 ":user-service:bootRun"
             ],
-            "group": "build",
             "isBackground": true,
-            "dependsOn": "🔐 Start Auth Service",
+            "group": "build",
+            "dependsOn": [
+                "Start Auth Service"
+            ],
             "problemMatcher": [
                 {
+                    "owner": "spring",
                     "pattern": [
                         {
-                            "regexp": ".",
+                            "regexp": "^.*$",
                             "file": 1,
                             "location": 2,
                             "message": 3
@@ -176,21 +200,195 @@
                 "clear": false
             }
         },
+        /* --------------------------------------------------------------- */
+        /*  ORGANIZATION SERVICE                                          */
+        /* --------------------------------------------------------------- */
         {
-            "label": "🌐 Start API Gateway",
+            "label": "Start Organization Service",
+            "type": "shell",
+            "command": "./gradlew.bat",
+            "args": [
+                ":organization-service:bootRun"
+            ],
+            "isBackground": true,
+            "group": "build",
+            "dependsOn": [
+                "Start User Service"
+            ],
+            "problemMatcher": [
+                {
+                    "owner": "spring",
+                    "pattern": [
+                        {
+                            "regexp": "^.*$",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*Started OrganizationServiceApplication.*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        /* --------------------------------------------------------------- */
+        /*  NOTE SERVICE                                                  */
+        /* --------------------------------------------------------------- */
+        {
+            "label": "Start Note Service",
+            "type": "shell",
+            "command": "./gradlew.bat",
+            "args": [
+                ":note-service:bootRun"
+            ],
+            "isBackground": true,
+            "group": "build",
+            "dependsOn": [
+                "Start Organization Service"
+            ],
+            "problemMatcher": [
+                {
+                    "owner": "spring",
+                    "pattern": [
+                        {
+                            "regexp": "^.*$",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*Started NoteServiceApplication.*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        /* --------------------------------------------------------------- */
+        /*  NOTIFICATION SERVICE                                          */
+        /* --------------------------------------------------------------- */
+        {
+            "label": "Start Notification Service",
+            "type": "shell",
+            "command": "./gradlew.bat",
+            "args": [
+                ":notification-service:bootRun"
+            ],
+            "isBackground": true,
+            "group": "build",
+            "dependsOn": [
+                "Start Note Service"
+            ],
+            "problemMatcher": [
+                {
+                    "owner": "spring",
+                    "pattern": [
+                        {
+                            "regexp": "^.*$",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*Started NotificationServiceApplication.*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        /* --------------------------------------------------------------- */
+        /*  TAG SERVICE                                                   */
+        /* --------------------------------------------------------------- */
+        {
+            "label": "Start Tag Service",
+            "type": "shell",
+            "command": "./gradlew.bat",
+            "args": [
+                ":tag-service:bootRun"
+            ],
+            "isBackground": true,
+            "group": "build",
+            "dependsOn": [
+                "Start Notification Service"
+            ],
+            "problemMatcher": [
+                {
+                    "owner": "spring",
+                    "pattern": [
+                        {
+                            "regexp": "^.*$",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": ".*Started TagServiceApplication.*",
+                        "endsPattern": ".*"
+                    }
+                }
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        },
+        /* --------------------------------------------------------------- */
+        /*  API GATEWAY                                                   */
+        /* --------------------------------------------------------------- */
+        {
+            "label": "Start API Gateway",
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
                 ":api-gateway:bootRun"
             ],
-            "group": "build",
             "isBackground": true,
-            "dependsOn": "👥 Start User Service",
+            "group": "build",
+            "dependsOn": [
+                "Start Tag Service"
+            ],
             "problemMatcher": [
                 {
+                    "owner": "spring",
                     "pattern": [
                         {
-                            "regexp": ".",
+                            "regexp": "^.*$",
                             "file": 1,
                             "location": 2,
                             "message": 3
@@ -212,8 +410,11 @@
                 "clear": false
             }
         },
+        /* --------------------------------------------------------------- */
+        /*  STOP / CLEAN                                                   */
+        /* --------------------------------------------------------------- */
         {
-            "label": "🛑 Stop All Services",
+            "label": "Stop All Services",
             "type": "shell",
             "command": "cmd",
             "args": [
@@ -230,14 +431,15 @@
             "problemMatcher": []
         },
         {
-            "label": "🧹 Clean All Services",
+            "label": "Clean All Services",
             "type": "shell",
             "command": "${workspaceFolder}/clean-all.bat",
+            "group": "build",
             "presentation": {
                 "echo": true,
                 "reveal": "always",
-                "panel": "shared",
-                "focus": false
+                "focus": false,
+                "panel": "shared"
             },
             "problemMatcher": []
         }
