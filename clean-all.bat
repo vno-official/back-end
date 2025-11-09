@@ -7,11 +7,21 @@ echo       CLEAN ALL + GRADLE CACHE + DOCKER CACHE
 echo =====================================================
 echo.
 
-REM --- Danh sách modules ---
-set MODULES=src:config-server src:service-discovery src:api-gateway src:auth-service src:user-service src:note-service src:tag-service src:notification-service src:organization-service src:common
+REM --- Core modules ---
+set CORE_MODULES=config-server service-discovery api-gateway common
 
-echo [1/5] Cleaning Gradle modules...
-for %%M in (%MODULES%) do (
+REM --- Service modules ---
+set SERVICE_MODULES=services:auth-service services:user-service services:note-service services:tag-service services:notification-service services:organization-service
+
+echo [1/5] Cleaning core modules...
+for %%M in (%CORE_MODULES%) do (
+    echo.
+    echo   Cleaning %%M ...
+    call .\gradlew.bat :%%M:clean
+)
+
+echo [2/5] Cleaning service modules...
+for %%M in (%SERVICE_MODULES%) do (
     echo.
     echo   Cleaning %%M ...
     call .\gradlew.bat :%%M:clean

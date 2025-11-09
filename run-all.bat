@@ -13,13 +13,13 @@ timeout /t 10 >nul
 start "Config Server" cmd /k ".\gradlew.bat :config-server:bootRun && Config Server Ready!"
 timeout /t 5 >nul
 
-start "Auth Service" cmd /k ".\gradlew.bat :src:auth-service:bootRun && Auth Service Ready!"
+start "Auth Service" cmd /k ".\gradlew.bat :services:auth-service:bootRun && Auth Service Ready!"
 timeout /t 5 >nul
 
-start "User Service" cmd /k ".\gradlew.bat :src:user-service:bootRun && User Service Ready!"
+start "User Service" cmd /k ".\gradlew.bat :services:user-service:bootRun && User Service Ready!"
 timeout /t 5 >nul
 
-start "API Gateway" cmd /k ".\gradlew.bat :src:api-gateway:bootRun && API Gateway Ready!"
+start "API Gateway" cmd /k ".\gradlew.bat :services:api-gateway:bootRun && API Gateway Ready!"
 
 echo.
 echo ========================================

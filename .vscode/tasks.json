@@ -106,7 +106,7 @@
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
-                ":src:auth-service:bootRun"
+                ":auth-service:bootRun"
             ],
             "group": "build",
             "isBackground": true,
@@ -145,7 +145,7 @@
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
-                ":src:user-service:bootRun"
+                ":user-service:bootRun"
             ],
             "group": "build",
             "isBackground": true,
@@ -181,7 +181,7 @@
             "type": "shell",
             "command": "./gradlew.bat",
             "args": [
-                ":src:api-gateway:bootRun"
+                ":api-gateway:bootRun"
             ],
             "group": "build",
             "isBackground": true,

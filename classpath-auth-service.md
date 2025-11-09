@@ -86,7 +86,7 @@ runtimeClasspath - Runtime classpath of source set 'main'.
 +--- io.zipkin.reporter2:zipkin-reporter-brave -> 3.5.1
 |    \--- io.zipkin.reporter2:zipkin-reporter:3.5.1
 +--- org.mapstruct:mapstruct:1.5.5.Final
-+--- project :src:common
++--- project :services:common
 |    +--- org.springframework.boot:spring-boot-starter-validation -> 3.5.6 (*)
 |    +--- org.springframework.boot:spring-boot-starter-actuator -> 3.5.6 (*)
 |    +--- io.micrometer:micrometer-tracing-bridge-brave -> 1.5.4 (*)

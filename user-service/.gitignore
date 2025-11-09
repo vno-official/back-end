@@ -1,9 +1,3 @@
-### Project Root ###
-/target/
-/.gradle/
-/build/
-/out/
-
 ### Java ###
 *.class
 *.log
@@ -58,12 +52,6 @@ bin/
 !.vscode/launch.json
 !.vscode/extensions.json
 
-### Node ###
-node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
-
 ### Logs ###
 logs/
 *.log
@@ -74,25 +62,3 @@ yarn-error.log*
 ### OS ###
 .DS_Store
 Thumbs.db
-
-### Custom ###
-# Local environment files
-.env
-.env.local
-.env.*.local
-
-# OpenAPI generated files
-/contracts/generated/
-
-# Maven wrapper
-.mvn/
-mvnw
-mvnw.cmd
-
-# Docker
-docker-compose.override.yml
-/docker/data/
-
-# IDE-specific files
-*.swp
-*.swo

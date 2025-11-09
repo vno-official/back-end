@@ -49,7 +49,7 @@ Default credentials (can be overridden via environment variables):
 ### 1. Start Service Discovery (Eureka)
 
 ```bash
-./gradlew :src:service-discovery:bootRun
+./gradlew :services:service-discovery:bootRun
 ```
 
 **Verify**: http://localhost:8761 (username: `eureka`, password: `eureka-secret`)
@@ -57,7 +57,7 @@ Default credentials (can be overridden via environment variables):
 ### 2. Start Config Server
 
 ```bash
-./gradlew :src:config-server:bootRun
+./gradlew :services:config-server:bootRun
 ```
 
 **Verify**: http://localhost:8888/actuator/health (username: `config`, password: `config123`)
@@ -67,7 +67,7 @@ Default credentials (can be overridden via environment variables):
 ### 3. Start User Service
 
 ```bash
-./gradlew :src:user-service:bootRun
+./gradlew :services:user-service:bootRun
 ```
 
 **Port**: 8082
@@ -75,7 +75,7 @@ Default credentials (can be overridden via environment variables):
 ### 4. Start Auth Service
 
 ```bash
-./gradlew :src:auth-service:bootRun
+./gradlew :services:auth-service:bootRun
 ```
 
 **Port**: 8081
@@ -242,8 +242,8 @@ CONFIG_SERVER_PASSWORD=config123
 
 ```bash
 # Reset Flyway (development only)
-./gradlew :src:auth-service:flywayClean
-./gradlew :src:auth-service:flywayMigrate
+./gradlew :services:auth-service:flywayClean
+./gradlew :services:auth-service:flywayMigrate
 ```
 
 ## Development Tips
@@ -256,10 +256,10 @@ Use Spring DevTools for hot reload during development.
 
 ```bash
 # Auth Service
-./gradlew :src:auth-service:bootRun --console=plain
+./gradlew :services:auth-service:bootRun --console=plain
 
 # User Service
-./gradlew :src:user-service:bootRun --console=plain
+./gradlew :services:user-service:bootRun --console=plain
 ```
 
 ### Build All Services
