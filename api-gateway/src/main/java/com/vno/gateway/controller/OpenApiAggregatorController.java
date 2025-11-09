@@ -1,6 +1,10 @@
 package com.vno.gateway.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Simple aggregator that fetches downstream service OpenAPI JSON and merges
@@ -20,11 +23,15 @@ import java.util.Map;
 @RequestMapping("/v3/api-docs")
 public class OpenApiAggregatorController {
 
+    private static final Logger log = LoggerFactory.getLogger(OpenApiAggregatorController.class);
+
     private final WebClient webClient;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final DiscoveryClient discoveryClient;
 
-    public OpenApiAggregatorController(WebClient.Builder webClientBuilder) {
+    public OpenApiAggregatorController(WebClient.Builder webClientBuilder, DiscoveryClient discoveryClient) {
         this.webClient = webClientBuilder.build();
+        this.discoveryClient = discoveryClient;
     }
 
     @GetMapping(value = "/aggregated", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,35 +47,80 @@ public class OpenApiAggregatorController {
         Map<String, Object> paths = new LinkedHashMap<>();
         Map<String, Object> components = new LinkedHashMap<>();
 
-        // Fetch auth-service OpenAPI (expects auth-service available at localhost:8081
-        // and prefixed path /api/auth)
-        try {
-            Map authDoc = webClient.get()
-                    .uri("http://localhost:8081/api/auth/v3/api-docs")
-                    .retrieve()
-                    .bodyToMono(Map.class)
-                    .block();
+        // Discover services via DiscoveryClient and fetch their OpenAPI docs.
+        List<String> services = discoveryClient.getServices();
+        String selfApp = Optional.ofNullable(System.getProperty("spring.application.name")).orElse("api-gateway");
 
-            if (authDoc != null) {
-                Object authPathsObj = authDoc.get("paths");
-                if (authPathsObj instanceof Map) {
-                    Map<String, Object> authPaths = (Map<String, Object>) authPathsObj;
-                    for (Map.Entry<String, Object> e : authPaths.entrySet()) {
-                        // prefix path with /auth to avoid collisions
-                        String prefixed = "/auth" + e.getKey();
-                        paths.put(prefixed, e.getValue());
+        for (String serviceId : services) {
+            if (serviceId.equalsIgnoreCase(selfApp))
+                continue; // skip gateway itself
+
+            List<ServiceInstance> instances = discoveryClient.getInstances(serviceId);
+            if (instances == null || instances.isEmpty())
+                continue;
+
+            // use first instance
+            String baseUri = instances.get(0).getUri().toString();
+            String prefix = serviceId.replaceAll("-service$", "").replace('_', '-');
+            if (prefix.startsWith("/"))
+                prefix = prefix.substring(1);
+            prefix = "/" + prefix;
+
+            // try a few candidate paths for OpenAPI docs
+            List<String> candidates = Arrays.asList(
+                    baseUri + "/v3/api-docs",
+                    baseUri + "/api" + prefix + "/v3/api-docs",
+                    baseUri + prefix + "/v3/api-docs",
+                    baseUri + "/api/v3/api-docs");
+
+            boolean fetched = false;
+            for (String url : candidates) {
+                try {
+                    Map doc = webClient.get()
+                            .uri(url)
+                            .retrieve()
+                            .bodyToMono(Map.class)
+                            .block();
+
+                    if (doc == null)
+                        continue;
+
+                    Object pathsObj = doc.get("paths");
+                    if (pathsObj instanceof Map) {
+                        Map<String, Object> servicePaths = (Map<String, Object>) pathsObj;
+                        for (Map.Entry<String, Object> e : servicePaths.entrySet()) {
+                            String newPath = prefix + e.getKey();
+                            paths.put(newPath, e.getValue());
+                        }
                     }
-                }
 
-                Object authComponents = authDoc.get("components");
-                if (authComponents instanceof Map) {
-                    components.putAll((Map) authComponents);
+                    Object compObj = doc.get("components");
+                    if (compObj instanceof Map) {
+                        // shallow merge components - prefer existing entries
+                        Map<String, Object> compMap = (Map<String, Object>) compObj;
+                        for (Map.Entry<String, Object> c : compMap.entrySet()) {
+                            Object existing = components.get(c.getKey());
+                            if (existing instanceof Map && c.getValue() instanceof Map) {
+                                Map merged = new LinkedHashMap<>((Map) existing);
+                                merged.putAll((Map) c.getValue());
+                                components.put(c.getKey(), merged);
+                            } else if (!components.containsKey(c.getKey())) {
+                                components.put(c.getKey(), c.getValue());
+                            }
+                        }
+                    }
+
+                    fetched = true;
+                    break;
+                } catch (Exception ex) {
+                    log.debug("Failed to fetch OpenAPI from {} (serviceId {}). Trying next candidate. error={}", url,
+                            serviceId, ex.getMessage());
                 }
             }
-        } catch (Exception ex) {
-            // log and continue with empty service
-            // In production you'd want better error handling and timeouts
-            aggregated.put("x-aggregation-error", "auth-service unreachable: " + ex.getMessage());
+
+            if (!fetched) {
+                log.warn("Could not fetch OpenAPI doc for service {} at {}", serviceId, baseUri);
+            }
         }
 
         aggregated.put("paths", paths);

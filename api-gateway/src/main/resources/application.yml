@@ -51,6 +51,10 @@ springdoc:
     urls:
       - name: Aggregated
         url: /v3/api-docs/aggregated
+      - name: auth-service
+        url: /v3/api-docs/auth
+      - name: user-service
+        url: /v3/api-docs/user
     use-root-path: true
     operations-sorter: method
     tags-sorter: alpha

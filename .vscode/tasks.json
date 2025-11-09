@@ -10,10 +10,10 @@
                 "Start Config Server",
                 "Start Auth Service",
                 "Start User Service",
-                "Start Organization Service",
-                "Start Note Service",
-                "Start Notification Service",
-                "Start Tag Service",
+                // "Start Organization Service",
+                // "Start Note Service",
+                // "Start Notification Service",
+                // "Start Tag Service",
                 "Start API Gateway"
             ],
             "group": "build",
@@ -380,9 +380,9 @@
             ],
             "isBackground": true,
             "group": "build",
-            "dependsOn": [
-                "Start Tag Service"
-            ],
+            // "dependsOn": [
+            //     "Start Tag Service"
+            // ],
             "problemMatcher": [
                 {
                     "owner": "spring",
