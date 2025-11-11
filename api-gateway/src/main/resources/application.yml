@@ -10,35 +10,37 @@ spring:
   config:
     import: "optional:configserver:http://config:config123@localhost:8888"
   cloud:
-    discovery:
-      enabled: true
-      client:
-        composite-indicator:
-          enabled: false
-    loadbalancer:
-      ribbon:
-        enabled: false
     gateway:
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
       routes:
-        - id: auth-service
+        # Auth Service OpenAPI
+        - id: openapi-auth
           uri: lb://auth-service
           predicates:
-            - Path=/api/auth/**
+            - Path=/v3/api-docs/auth
           filters:
-            - StripPrefix=1
-        - id: user-service
+            - RewritePath=/v3/api-docs/auth, /v3/api-docs
+
+        # User Service OpenAPI
+        - id: openapi-user
           uri: lb://user-service
           predicates:
-            - Path=/api/users/**
+            - Path=/v3/api-docs/user
           filters:
-            - StripPrefix=1
-            - name: JwtAuthenticationFilter
+            - RewritePath=/v3/api-docs/user, /v3/api-docs
+
+        # Organization Service OpenAPI
+        - id: openapi-org
+          uri: lb://organization-service
+          predicates:
+            - Path=/v3/api-docs/org
+          filters:
+            - RewritePath=/v3/api-docs/org, /v3/api-docs
   security:
     user:
       name: admin
       password: 123456
+    basic:
+      enabled: false
     oauth2:
       resourceserver:
         jwt:
@@ -49,21 +51,15 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     urls:
-      - name: Aggregated
+      - name: VNO Aggregated API
         url: /v3/api-docs/aggregated
-      - name: auth-service
+      - name: Auth Service
         url: /v3/api-docs/auth
-      - name: user-service
+      - name: User Service
         url: /v3/api-docs/user
-    use-root-path: true
-    operations-sorter: method
-    tags-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
-  webjars:
-    prefix: /webjars
-  cors:
-    enabled: true
+      - name: Org Service
+        url: /v3/api-docs/org
+    config-url: /v3/api-docs/aggregated
 
 management:
   tracing:

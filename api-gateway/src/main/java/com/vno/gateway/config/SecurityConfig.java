@@ -30,15 +30,19 @@ public class SecurityConfig {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
+                        // 1. CHO PHÉP TÀI NGUYÊN TĨNH TRƯỚC
                         .pathMatchers(
-                                "/auth/**",
-                                "/api-docs/**",
+                                "/webjars/**", // ← PHẢI ĐẶT ĐẦU TIÊN
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/webjars/**")
+                                "/api-docs/**",
+                                "/auth/**")
                         .permitAll()
-                        .anyExchange().authenticated());
+
+                        // 2. Các API khác cần JWT
+                        .anyExchange().authenticated())
+                .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt);
 
         return http.build();
     }

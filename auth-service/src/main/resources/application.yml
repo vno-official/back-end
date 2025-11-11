@@ -46,6 +46,8 @@ logging:
     org.springdoc: DEBUG
     com.vno.auth: DEBUG
 
+
+
 eureka:
   client:
     serviceUrl:

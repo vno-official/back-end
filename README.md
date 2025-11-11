@@ -17,8 +17,11 @@ vno-backend
 │        │           ├─ config
 │        │           │  ├─ OpenApiConfig.java
 │        │           │  └─ SecurityConfig.java
+│        │           ├─ controller
+│        │           │  └─ OpenApiAggregatorController.java
 │        │           ├─ filter
-│        │           │  └─ AuthFilter.java
+│        │           │  ├─ AuthFilter.java
+│        │           │  └─ JwtAuthenticationFilter.java
 │        │           └─ security
 │        │              ├─ JwtAuthenticationToken.java
 │        │              └─ JwtUtil.java
@@ -39,6 +42,8 @@ vno-backend
 │     │  │           │  └─ UserServiceClient.java
 │     │  │           ├─ config
 │     │  │           │  ├─ OpenApiConfig.java
+│     │  │           │  ├─ OpenApiRedirectController.java
+│     │  │           │  ├─ SecurityConfig.java
 │     │  │           │  └─ WebConfig.java
 │     │  │           ├─ controller
 │     │  │           │  └─ AuthController.java
@@ -242,13 +247,7 @@ vno-backend
 │        │           └─ ServiceDiscoveryApplication.java
 │        └─ resources
 │           └─ application.yml
-├─ services
-│  ├─ api-gateway
-│  │  └─ build.gradle.kts
-│  └─ user-service
-│     └─ build.gradle.kts
 ├─ settings.gradle.kts
-├─ SETUP.md
 ├─ structure.md
 ├─ tag-service
 │  ├─ build.gradle.kts
@@ -278,6 +277,7 @@ vno-backend
 │     │  │        └─ user
 │     │  │           ├─ config
 │     │  │           │  ├─ OpenApiConfig.java
+│     │  │           │  ├─ OpenApiRedirectController.java
 │     │  │           │  └─ PasswordConfig.java
 │     │  │           ├─ controller
 │     │  │           │  ├─ InternalAuthController.java
