@@ -74,7 +74,7 @@ public class OpenApiAggregatorController {
 
     private void mergeDoc(Map<String, Object> target, Map<String, Object> source, String prefix) {
         mergePaths(target, source, prefix);
-        mergeComponents(target, source);
+        // mergeComponents(target, source);
     }
 
     @SuppressWarnings("unchecked")
@@ -95,19 +95,23 @@ public class OpenApiAggregatorController {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private void mergeComponents(Map<String, Object> target, Map<String, Object> source) {
-        Map<String, Object> targetSchemas = (Map<String, Object>) ((Map<String, Object>) target.get("components"))
-                .get("schemas");
-        Map<String, Object> sourceSchemas = (Map<String, Object>) ((Map<String, Object>) source.get("components"))
-                .get("schemas");
+    // @SuppressWarnings("unchecked")
+    // private void mergeComponents(Map<String, Object> target, Map<String, Object>
+    // source) {
+    // Map<String, Object> targetSchemas = (Map<String, Object>) ((Map<String,
+    // Object>) target.get("components"))
+    // .get("schemas");
+    // Map<String, Object> sourceSchemas = (Map<String, Object>) ((Map<String,
+    // Object>) source.get("components"))
+    // .get("schemas");
 
-        if (sourceSchemas != null) {
-            sourceSchemas.forEach((name, schema) -> {
-                String prefixedName = name + "_" + UUID.randomUUID().toString().substring(0, 8);
-                targetSchemas.put(prefixedName, schema);
-            });
-        }
-    }
+    // if (sourceSchemas != null) {
+    // sourceSchemas.forEach((name, schema) -> {
+    // String prefixedName = name + "_" + UUID.randomUUID().toString().substring(0,
+    // 8);
+    // targetSchemas.put(prefixedName, schema);
+    // });
+    // }
+    // }
 
 }

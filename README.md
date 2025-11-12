@@ -15,8 +15,11 @@ vno-backend
 │        │        └─ gateway
 │        │           ├─ ApiGatewayApplication.java
 │        │           ├─ config
-│        │           │  ├─ OpenApiConfig.java
-│        │           │  └─ SecurityConfig.java
+│        │           │  ├─ GatewayOpenApiProperties.java
+│        │           │  ├─ OpenApiAggregationConfig.java
+│        │           │  ├─ OpenApiRouteConfig.java
+│        │           │  ├─ SecurityConfig.java
+│        │           │  └─ WebClientConfig.java
 │        │           ├─ controller
 │        │           │  └─ OpenApiAggregatorController.java
 │        │           ├─ filter
@@ -148,7 +151,6 @@ vno-backend
 │  │  └─ user-events.yaml
 │  ├─ openapi
 │  │  ├─ auth-service.yaml
-│  │  ├─ gateway-aggregated.yaml
 │  │  └─ user-service.yaml
 │  └─ proto
 │     ├─ auth.proto
@@ -166,7 +168,6 @@ vno-backend
 ├─ note-service
 │  ├─ build.gradle.kts
 │  └─ src
-│     ├─ main
 │     └─ test
 ├─ notification-service
 │  ├─ build.gradle.kts
@@ -177,7 +178,6 @@ vno-backend
 │        │  └─ com
 │        │     └─ vno
 │        │        └─ notification
-│        │           ├─ config
 │        │           ├─ controller
 │        │           │  └─ NotificationController.java
 │        │           └─ NotificationServiceApplication.java
@@ -233,7 +233,8 @@ vno-backend
 ├─ run-all.bat
 ├─ run-order.md
 ├─ scripts
-│  └─ setup-contracts.ps1
+│  ├─ setup-contracts.ps1
+│  └─ sync-contracts.ps1
 ├─ service-discovery
 │  ├─ build.gradle.kts
 │  ├─ docker-compose.yml

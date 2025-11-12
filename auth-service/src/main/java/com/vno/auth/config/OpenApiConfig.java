@@ -38,14 +38,14 @@ public class OpenApiConfig {
                                                                 .url("https://springdoc.org")));
         }
 
-        @Bean
-        public GroupedOpenApi authApi() {
-                return GroupedOpenApi.builder()
-                                .group("auth")
-                                .packagesToScan("com.vno.auth.controller")
-                                .pathsToMatch("/api/auth/**")
-                                .build();
-        }
+        // @Bean
+        // public GroupedOpenApi authApi() {
+        //         return GroupedOpenApi.builder()
+        //                         .group("auth")
+        //                         .packagesToScan("com.vno.auth.controller")
+        //                         .pathsToMatch("/api/auth/**")
+        //                         .build();
+        // }
         // .contact(new Contact()
         // .name("Auth Service Team")
         // .email("auth-team@company.com"))

@@ -1,82 +1,67 @@
+# config-repo/auth-service.yml (Cấu hình cho auth-service)
+
+# 1. Cổng
 server:
   port: 8081
 
+# 2. Cấu hình Cơ sở dữ liệu
 spring:
-  application:
-    name: auth-service
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:vno_auth}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
-      connection-timeout: 20000
-      idle-timeout: 300000
-      max-lifetime: 1200000
+    url: jdbc:h2:mem:authdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
+    show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        jdbc:
-          batch_size: 20
-        order_inserts: true
-        order_updates: true
-  flyway:
-    enabled: true
-    baseline-on-migrate: true
-    locations: classpath:db/migration/postgres
+        dialect: org.hibernate.dialect.H2Dialect
 
-# JWT Configuration
+  flyway:
+    enabled: false
+
+  security:
+    user:
+      name: admin
+      password: 123456
+
+# 3. Cấu hình Springdoc OpenAPI/Swagger UI
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+    operations-sorter: method
+    tags-sorter: alpha
+  packages-to-scan: com.vno.auth.controller
+  paths-to-match: /api/**
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+
+# 4. Cấu hình Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:eureka-secret@localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+# 5. Cấu hình khác
+management:
+  tracing:
+    enabled: false
+
 jwt:
-  secret-key: ${JWT_SECRET:dGhpc2lzYXZlcnlzZWNyZXRrZXl0aGF0c2hvdWxkYmVjaGFuZ2VkaW5wcm9kdWN0aW9uMTIzNDU2Nzg5MA==}
+  secret-key: dGhpc2lzYXZlcnlzZWNyZXRrZXl0aGF0c2hvdWxkYmVjaGFuZ2VkaW5wcm9kdWN0aW9uMTIzNDU2Nzg5MA==
   issuer: vno-auth-service
   access-token:
-    expiration: ${JWT_ACCESS_EXPIRATION:3600000} # 1 hour
+    expiration: 3600000
   refresh-token:
-    expiration: ${JWT_REFRESH_EXPIRATION:604800000} # 7 days
-
-# Security
-security:
-  allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000,http://localhost:4200}
-
-# Feign clients
-feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: basic
-      user-service:
-        url: http://user-service
-
-logging:
-  level:
-    com.vno.auth: DEBUG
-    org.springframework.security: DEBUG
-    org.hibernate.SQL: DEBUG
-
-
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html                  # UI tại: /swagger-ui.html
-    enabled: true
-  api-docs:
-    path: /v3/api-docs                      # JSON tại: /v3/api-docs
-    enabled: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,openapi,swagger-ui  # bật các endpoint này
-  info:
-    env:
-      enabled: true
-  endpoint:
-    health:
-      show-details: always
+    expiration: 604800000

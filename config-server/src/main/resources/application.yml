@@ -10,7 +10,7 @@ spring:
     config:
       server:
         native:
-          search-locations: file:${user.dir}/config-repo
+          search-locations: file:D:/side-projects/vno-backend/config-repo/
         # Git configuration (for production)
         git:
           uri: ${CONFIG_REPO_URI:https://github.com/your-org/config-repo.git}
@@ -32,7 +32,7 @@ eureka:
     fetch-registry: true
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    instance-id: ${spring.application.name}:${server.port}
 
 # Actuator Endpoints
 management:

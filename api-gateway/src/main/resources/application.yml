@@ -12,29 +12,14 @@ spring:
   cloud:
     gateway:
       routes:
-        # Auth Service OpenAPI
-        - id: openapi-auth
-          uri: lb://auth-service
+        # 1. ROUTE API THỰC TẾ CHO AUTH-SERVICE
+        - id: auth_service_route
+          uri: lb://auth-service # lb://auth-service: Sử dụng Load Balancer (Eureka) để tìm dịch vụ
           predicates:
-            - Path=/v3/api-docs/auth
+            - Path=/api/auth/** # Bất kỳ yêu cầu nào bắt đầu bằng /api/auth sẽ được chuyển tiếp
           filters:
-            - RewritePath=/v3/api-docs/auth, /v3/api-docs
-
-        # User Service OpenAPI
-        - id: openapi-user
-          uri: lb://user-service
-          predicates:
-            - Path=/v3/api-docs/user
-          filters:
-            - RewritePath=/v3/api-docs/user, /v3/api-docs
-
-        # Organization Service OpenAPI
-        - id: openapi-org
-          uri: lb://organization-service
-          predicates:
-            - Path=/v3/api-docs/org
-          filters:
-            - RewritePath=/v3/api-docs/org, /v3/api-docs
+            # - StripPrefix=1 # (Tùy chọn: nếu API Auth không có /api/auth trong controller)
+            # Thường bạn có thể cần thêm các filter như JwtAuthenticationFilter tại đây.
   security:
     user:
       name: admin
@@ -49,17 +34,16 @@ spring:
 # application.yml của api-gateway
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
+    # 1. Kích hoạt tính năng tổng hợp
+    url: /v3/api-docs/swagger-config 
+    # 2. Định nghĩa danh sách các tài liệu con
     urls:
-      - name: VNO Aggregated API
-        url: /v3/api-docs/aggregated
-      - name: Auth Service
-        url: /v3/api-docs/auth
-      - name: User Service
-        url: /v3/api-docs/user
-      - name: Org Service
-        url: /v3/api-docs/org
-    config-url: /v3/api-docs/aggregated
+      - name: Auth Service 🔐 # Tên hiển thị trên dropdown menu
+        url: /v3/api-docs/auth-service # URL ảo mà Gateway sẽ tạo ra
+        
+      # (Sau này thêm User Service vào đây)
+      # - name: User Service 🧑
+      #   url: /v3/api-docs/user-service
 
 management:
   tracing:
