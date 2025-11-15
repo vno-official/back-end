@@ -1,7 +1,5 @@
 # Common configuration for all services
 spring:
-  profiles:
-    active: default
   jpa:
     show-sql: false
     properties:

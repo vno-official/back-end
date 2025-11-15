@@ -6,18 +6,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
     
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.cloud:spring-cloud-starter-bootstrap")
     // Spring Cloud
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
-    
-    // OpenAPI/Swagger Documentation
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-api:2.2.0")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
-    
+
     // Database
     implementation("org.flywaydb:flyway-core:10.0.1")
     implementation("org.flywaydb:flyway-database-postgresql:10.0.1")

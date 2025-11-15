@@ -14,7 +14,7 @@
                 // "Start Note Service",
                 // "Start Notification Service",
                 // "Start Tag Service",
-                "Start API Gateway"
+                // "Start API Gateway"
             ],
             "group": "build",
             "problemMatcher": []

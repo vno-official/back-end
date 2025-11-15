@@ -1,8 +1,6 @@
 package com.vno.gateway.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.route.RouteLocator;
-import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -30,18 +28,18 @@ public class SecurityConfig {
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
-                        // 1. CHO PHÉP TÀI NGUYÊN TĨNH TRƯỚC
+                        // Cho phép các tài nguyên công khai
                         .pathMatchers(
-                                "/webjars/**", // ← PHẢI ĐẶT ĐẦU TIÊN
+                                "/webjars/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/api-docs/**",
                                 "/auth/**")
                         .permitAll()
-
-                        // 2. Các API khác cần JWT
+                        // Các request còn lại yêu cầu xác thực
                         .anyExchange().authenticated())
+                // Cấu hình OAuth2 Resource Server với JWT
                 .oauth2ResourceServer(ServerHttpSecurity.OAuth2ResourceServerSpec::jwt);
 
         return http.build();

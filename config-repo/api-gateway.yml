@@ -4,48 +4,53 @@ server:
 spring:
   application:
     name: api-gateway
+  config:
+    import: "optional:configserver:http://192.168.56.1:8888"
   cloud:
     gateway:
       routes:
         - id: auth-service
-          uri: lb://auth-service
+          uri: http://localhost:8081/
           predicates:
-            - Path=/api/auth/**
-
+            - Path=/api-docs/auth-service
         - id: user-service
-          uri: lb://user-service
+          uri: http://localhost:8082/
           predicates:
-            - Path=/api/users/**
-          filters:
-            - RewritePath=/api/users/(?<segment>.*), /${segment}
+            - Path=/api-docs/user-service
+      config:
+        uri: http://192.168.56.1:8888
+        fail-fast: true
+        retry:
+          maxAttempts: 3
+  security:
+  oauth2:
+    resourceserver:
+      jwt:
+        jwk-set-uri: placeholder-uri-to-be-overridden
 
-        - id: note-service
-          uri: lb://note-service
-          predicates:
-            - Path=/api/notes/**
-          filters:
-            - RewritePath=/api/notes/(?<segment>.*), /${segment}
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls: []  # Remove hardcoded URLs — let discovery do the work
 
-        - id: tag-service
-          uri: lb://tag-service
-          predicates:
-            - Path=/api/tags/**
-          filters:
-            - RewritePath=/api/tags/(?<segment>.*), /${segment}
+  # Enable service discovery for OpenAPI aggregation
+  group-configs:
+    - group: all-services
+      packages-to-scan: com.vno  # Optional: filter by package
+      paths-to-match: /**
 
-        - id: organization-service
-          uri: lb://organization-service
-          predicates:
-            - Path=/api/organizations/**
-          filters:
-            - RewritePath=/api/organizations/(?<segment>.*), /${segment}
-
-        - id: notification-service
-          uri: lb://notification-service
-          predicates:
-            - Path=/api/notifications/**,/ws/notifications
-          filters:
-            - RewritePath=/api/notifications/(?<segment>.*), /${segment}
+  # Automatically discover OpenAPI from registered services
+  swagger-ui:
+    urls:
+      - name: auth-service
+        url: /api/auth/v3/api-docs
+      - name: user-service
+        url: /api/users/v3/api-docs
 
 jwt:
   secret: ${JWT_SECRET:dGhpc2lzYXZlcnlzZWNyZXRrZXl0aGF0c2hvdWxkYmVjaGFuZ2VkaW5wcm9kdWN0aW9uMTIzNDU2Nzg5MA==}
