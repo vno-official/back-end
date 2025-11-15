@@ -40,6 +40,8 @@ springdoc:
     urls:
       - name: Auth Service 🔐 # Tên hiển thị trên dropdown menu
         url: /v3/api-docs/auth-service # URL ảo mà Gateway sẽ tạo ra
+      - name: User Service 🔐 # Tên hiển thị trên dropdown menu
+        url: /v3/api-docs/user-service # URL ảo mà Gateway sẽ tạo ra
         
       # (Sau này thêm User Service vào đây)
       # - name: User Service 🧑

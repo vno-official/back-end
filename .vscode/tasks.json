@@ -9,12 +9,12 @@
                 "Open Eureka Dashboard",
                 "Start Config Server",
                 "Start Auth Service",
-                // "Start User Service",
+                "Start User Service",
                 // "Start Organization Service",
                 // "Start Note Service",
                 // "Start Notification Service",
                 // "Start Tag Service",
-                // "Start API Gateway"
+                "Start API Gateway"
             ],
             "group": "build",
             "problemMatcher": []
