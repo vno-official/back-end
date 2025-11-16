@@ -15,6 +15,9 @@ dependencies {
     // Ably
     implementation("io.ably:ably-java:1.2.5")
 
+    // Database
+    runtimeOnly("org.postgresql:postgresql:42.7.0")
+
     // Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

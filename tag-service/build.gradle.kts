@@ -11,7 +11,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
     // Database
-    runtimeOnly("com.h2database:h2:2.2.224")
+    runtimeOnly("org.postgresql:postgresql:42.7.0")
 
     // OpenAPI
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")

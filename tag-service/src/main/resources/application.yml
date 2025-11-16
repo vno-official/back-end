@@ -5,20 +5,20 @@ spring:
   application:
     name: tag-service
 
-  # Database (H2 cho dev, PostgreSQL cho prod)
+  # Database (PostgreSQL)
   datasource:
-    url: jdbc:h2:mem:notedb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:vno_tags}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
 
   jpa:
     hibernate:
-      ddl-auto: create-drop # dev only
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
 # Spring Cloud Config (nếu dùng Config Server)

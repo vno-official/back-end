@@ -13,6 +13,7 @@ import com.vno.user.dto.UserResponse;
 import com.vno.user.exception.ResourceNotFoundException;
 import com.vno.user.mapper.UserMapper;
 import com.vno.user.model.User;
+import com.vno.user.model.enums.UserStatus;
 import com.vno.user.repository.UserRepository;
 import com.vno.user.service.UserService;
 
@@ -41,9 +42,9 @@ public class UserServiceImpl implements UserService {
     if (userRepository.existsByEmail(userRequest.getEmail())) {
       throw new IllegalArgumentException("Email is already in use");
     }
-
     // Map and save user
     User user = userMapper.toEntity(userRequest);
+    userRequest.setStatus(UserStatus.PENDING_VERIFICATION);
     // Encode password if provided
     if (userRequest.getPassword() != null) {
       user.setPassword(passwordEncoder.encode(userRequest.getPassword()));

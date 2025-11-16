@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 
 import com.vno.user.model.enums.UserStatus;
 
@@ -23,7 +23,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "users")
 public class User {
   @Id
-  @UuidGenerator
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+  @Column(name = "id", columnDefinition = "uuid", updatable = false, nullable = false)
   private UUID id;
 
   @Column(nullable = false, unique = true)
@@ -46,10 +48,12 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
+  @Builder.Default
   private UserStatus status = UserStatus.ACTIVE;
 
   @Column(name = "email_verified", nullable = false)
-  private boolean emailVerified;
+  @Builder.Default
+  private boolean emailVerified = false;
 
   @Column(name = "last_login")
   private LocalDateTime lastLogin;
