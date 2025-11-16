@@ -16,7 +16,7 @@ public class OpenApiRedirectController {
     @GetMapping("/v3/api-docs")
     public void apiDocs(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Forward to the grouped docs path produced by GroupedOpenApi (group name:
-        // auth)
+        // user)
         request.getRequestDispatcher("/v3/api-docs/user").forward(request, response);
     }
 
@@ -32,13 +32,13 @@ public class OpenApiRedirectController {
     @GetMapping("/v3/api-docs/swagger-config")
     public void swaggerConfig(HttpServletResponse response) throws IOException {
         // Redirect to the global swagger-config endpoint, instructing it to use the
-        // 'auth' group
+        // 'user' group
         response.sendRedirect("/v3/api-docs/swagger-config?configUrl=/api/user/v3/api-docs");
     }
 
     @GetMapping("/swagger-ui.html")
     public void swaggerUi(HttpServletResponse response) throws IOException {
-        // Redirect to swagger UI, pointing it to the auth group docs
+        // Redirect to swagger UI, pointing it to the user group docs
         response.sendRedirect("/swagger-ui/index.html?configUrl=/api/user/v3/api-docs");
     }
 }

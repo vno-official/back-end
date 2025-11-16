@@ -35,7 +35,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/api-docs/**",
-                                "/auth/**")
+                                "/api/auth/**")
                         .permitAll()
                         // Các request còn lại yêu cầu xác thực
                         .anyExchange().authenticated())

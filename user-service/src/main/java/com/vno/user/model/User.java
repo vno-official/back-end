@@ -22,7 +22,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "users")
 public class User {
-  @Id @UuidGenerator private UUID id;
+  @Id
+  @UuidGenerator
+  private UUID id;
 
   @Column(nullable = false, unique = true)
   private String username;
@@ -44,7 +46,7 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private UserStatus status;
+  private UserStatus status = UserStatus.ACTIVE;
 
   @Column(name = "email_verified", nullable = false)
   private boolean emailVerified;

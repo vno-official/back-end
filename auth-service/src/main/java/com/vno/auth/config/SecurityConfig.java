@@ -26,6 +26,7 @@ public class SecurityConfig {
                                                 // 2. API công khai
                                                 .requestMatchers(
                                                                 "/api/auth/register",
+                                                                "/api/auth/test",
                                                                 "/api/auth/login",
                                                                 "/api/auth/refresh-token",
                                                                 "/api/auth/verify-email",
