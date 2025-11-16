@@ -14,8 +14,6 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
     // Database
-    implementation("org.flywaydb:flyway-core:10.0.1")
-    implementation("org.flywaydb:flyway-database-postgresql:10.0.1")
     runtimeOnly("org.postgresql:postgresql:42.7.0")
     runtimeOnly("com.h2database:h2:2.2.224")
     

@@ -14,16 +14,9 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = "com.vno.auth.client")
 @EnableJpaAuditing
-@OpenAPIDefinition(
-    info = @Info(
-        title = "Auth Service API",
-        version = "1.0",
-        description = "Authentication and Authorization Service"
-    ),
-    servers = @Server(url = "/api/auth", description = "Gateway-routed")
-)
+@OpenAPIDefinition(info = @Info(title = "Auth Service API", version = "1.0", description = "Authentication and Authorization Service"), servers = @Server(url = "/", description = "Gateway-routed"))
 public class AuthServiceApplication {
   public static void main(String[] args) {
     SpringApplication.run(AuthServiceApplication.class, args);
   }
-} 
+}
