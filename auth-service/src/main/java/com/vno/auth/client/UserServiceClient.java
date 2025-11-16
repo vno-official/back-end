@@ -1,5 +1,8 @@
 package com.vno.auth.client;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,11 +41,19 @@ public interface UserServiceClient {
 
   @lombok.Data
   class UserResponse {
-    private java.util.UUID id;
+    private UUID id;
     private String username;
     private String email;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
+    private boolean emailVerified;
+    private String avatarUrl;
+    private String timezone;
+    private String locale;
+    private LocalDateTime lastLogin;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
   }
 
   @lombok.Data

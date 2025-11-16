@@ -44,14 +44,14 @@ public class UserServiceImpl implements UserService {
     }
     // Map and save user
     User user = userMapper.toEntity(userRequest);
-    userRequest.setStatus(UserStatus.PENDING_VERIFICATION);
+    user.setStatus(UserStatus.PENDING_VERIFICATION);
     // Encode password if provided
     if (userRequest.getPassword() != null) {
       user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
     }
 
     user = userRepository.save(user);
-    log.info("Created user with id: {}", user.getId());
+    log.info("Created user with id: {}", user.toString());
 
     return userMapper.toResponse(user);
   }

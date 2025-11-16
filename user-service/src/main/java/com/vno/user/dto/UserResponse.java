@@ -21,7 +21,6 @@ public class UserResponse {
   private String firstName;
   private String lastName;
   private String phoneNumber;
-  private UserStatus status;
   private boolean emailVerified;
   private String avatarUrl;
   private String timezone;

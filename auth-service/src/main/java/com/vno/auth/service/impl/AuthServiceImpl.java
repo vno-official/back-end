@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties.System;
 import org.springframework.stereotype.Service;
 
 import com.vno.auth.dto.*;
@@ -12,8 +13,10 @@ import com.vno.auth.service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
@@ -44,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
     cu.setLastName(request.getLastName());
     var created = userClient.createUser(cu);
 
+    log.info("Created user response: {}", created);
     String subject = created.getData() != null && created.getData().getId() != null
         ? created.getData().getId().toString()
         : request.getUsername();
