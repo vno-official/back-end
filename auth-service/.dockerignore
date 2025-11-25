@@ -1,0 +1,11 @@
+.gradle/
+.qodo/
+build/
+target/
+.mvn/
+.idea/
+.vscode/
+*.log
+*.zip
+*.tar
+**/.DS_Store

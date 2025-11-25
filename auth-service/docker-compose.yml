@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  auth-service:
+    image: vno/auth-service:latest  
+    build:
+      context: auth-service
+      args:
+        - QUARKUS_CONTAINER_IMAGE_BUILD=true   # bật build image luôn
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/q/health/live"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
