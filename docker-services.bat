@@ -95,15 +95,18 @@ echo.
 echo Starting %service_name% on port %port%...
 echo.
 
+REM Create network if not exists
+docker network create vno-network >nul 2>&1
+
 REM Check if container already exists
-docker ps -a --filter "name=vno-%service_name%-container" --format "{{.Names}}" | findstr "vno-%service_name%-container" >nul 2>&1
+docker ps -a --filter "name=vno-%service_name%" --format "{{.Names}}" | findstr "vno-%service_name%" >nul 2>&1
 if not errorlevel 1 (
-    echo [INFO] Container vno-%service_name%-container already exists. Removing...
-    docker rm -f vno-%service_name%-container >nul 2>&1
+    echo [INFO] Container vno-%service_name% already exists. Removing...
+    docker rm -f vno-%service_name% >nul 2>&1
 )
 
 REM Start container in detached mode
-docker run -d -p %port%:%port% --name vno-%service_name%-container vno-%service_name%:latest
+docker run -d -p %port%:%port% --network vno-network --name vno-%service_name% vno-%service_name%:latest
 
 if errorlevel 1 (
     echo [ERROR] Failed to start %service_name%
@@ -115,7 +118,7 @@ if errorlevel 1 (
     echo [OK] %service_name% started successfully on port %port%
     echo.
     echo Access at: http://localhost:%port%
-    echo View logs: docker logs -f vno-%service_name%-container
+    echo View logs: docker logs -f vno-%service_name%
 )
 
 echo.
@@ -127,6 +130,9 @@ echo.
 echo Starting all services...
 echo.
 
+REM Create network if not exists
+docker network create vno-network >nul 2>&1
+
 set "services=auth-service:8080 user-service:8081 note-service:8082 realtime-collab-service:8083 notification-producer:8084 notification-processor:8085"
 
 for %%s in (%services%) do (
@@ -137,13 +143,13 @@ for %%s in (%services%) do (
         echo Starting !svc_name! on port !svc_port!...
         
         REM Check if container already exists
-        docker ps -a --filter "name=vno-!svc_name!-container" --format "{{.Names}}" | findstr "vno-!svc_name!-container" >nul 2>&1
+        docker ps -a --filter "name=vno-!svc_name!" --format "{{.Names}}" | findstr "vno-!svc_name!" >nul 2>&1
         if not errorlevel 1 (
-            docker rm -f vno-!svc_name!-container >nul 2>&1
+            docker rm -f vno-!svc_name! >nul 2>&1
         )
         
         REM Start container in detached mode
-        docker run -d -p !svc_port!:!svc_port! --name vno-!svc_name!-container vno-!svc_name!:latest >nul 2>&1
+        docker run -d -p !svc_port!:!svc_port! --network vno-network --name vno-!svc_name! vno-!svc_name!:latest >nul 2>&1
         
         if errorlevel 1 (
             echo [ERROR] Failed to start !svc_name!
@@ -232,16 +238,16 @@ goto stop_service
 echo.
 echo Stopping %service_name%...
 
-docker stop vno-%service_name%-container >nul 2>&1
+docker stop vno-%service_name% >nul 2>&1
 if errorlevel 1 (
-    echo [INFO] Container vno-%service_name%-container is not running
+    echo [INFO] Container vno-%service_name% is not running
 ) else (
-    echo [OK] Stopped vno-%service_name%-container
+    echo [OK] Stopped vno-%service_name%
 )
 
-docker rm vno-%service_name%-container >nul 2>&1
+docker rm vno-%service_name% >nul 2>&1
 if not errorlevel 1 (
-    echo [OK] Removed vno-%service_name%-container
+    echo [OK] Removed vno-%service_name%
 )
 
 echo.
@@ -256,17 +262,17 @@ echo.
 set "services=auth-service user-service note-service realtime-collab-service notification-producer notification-processor"
 
 for %%s in (%services%) do (
-    echo Stopping vno-%%s-container...
-    docker stop vno-%%s-container >nul 2>&1
+    echo Stopping vno-%%s...
+    docker stop vno-%%s >nul 2>&1
     if errorlevel 1 (
-        echo [INFO] Container vno-%%s-container not running
+        echo [INFO] Container vno-%%s not running
     ) else (
-        echo [OK] Stopped vno-%%s-container
+        echo [OK] Stopped vno-%%s
     )
     
-    docker rm vno-%%s-container >nul 2>&1
+    docker rm vno-%%s >nul 2>&1
     if not errorlevel 1 (
-        echo [OK] Removed vno-%%s-container
+        echo [OK] Removed vno-%%s
     )
 )
 
@@ -283,11 +289,45 @@ echo ========================================
 echo    Starting Kong Gateway (Standalone)...
 echo ========================================
 echo.
-echo This starts ONLY Kong Gateway using local config (kong.yml).
+echo This starts Kong Gateway using DOCKER config (kong-docker.yml).
+echo It connects to the 'vno-network' to reach other containers.
 echo.
 
-cd gateway
-docker-compose -f docker-compose.yml up -d
+REM Create network if not exists
+docker network create vno-network >nul 2>&1
+
+REM Check if container already exists (vno-kong-gateway)
+docker ps -a --filter "name=vno-kong-gateway" --format "{{.Names}}" | findstr "vno-kong-gateway" >nul 2>&1
+if not errorlevel 1 (
+    echo [INFO] Container vno-kong-gateway already exists. Removing...
+    docker rm -f vno-kong-gateway >nul 2>&1
+)
+
+REM Check for potential docker-compose container (gateway-kong-1 or similar)
+for /f "tokens=*" %%i in ('docker ps -a --filter "publish=8000" --format "{{.ID}}"') do (
+    echo [INFO] Found container %%i using port 8000. Removing...
+    docker rm -f %%i >nul 2>&1
+)
+
+REM Start Kong container
+docker run -d ^
+  --name vno-kong-gateway ^
+  --network vno-network ^
+  -e "KONG_DATABASE=off" ^
+  -e "KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml" ^
+  -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" ^
+  -e "KONG_ADMIN_ACCESS_LOG=/dev/stdout" ^
+  -e "KONG_PROXY_ERROR_LOG=/dev/stderr" ^
+  -e "KONG_ADMIN_ERROR_LOG=/dev/stderr" ^
+  -e "KONG_ADMIN_LISTEN=0.0.0.0:8001" ^
+  -e "KONG_ADMIN_GUI_URL=http://localhost:8002" ^
+  -e "KONG_ADMIN_GUI_LISTEN=0.0.0.0:8002" ^
+  -e "KONG_PROXY_LISTEN=0.0.0.0:8000" ^
+  -p 8000:8000 ^
+  -p 8001:8001 ^
+  -p 8002:8002 ^
+  -v "%CD%\gateway\kong-docker.yml:/usr/local/kong/declarative/kong.yml:ro" ^
+  kong/kong-gateway:3.8.0.0
 
 if errorlevel 1 (
     echo.
@@ -303,15 +343,24 @@ if errorlevel 1 (
     echo.
     pause
 )
-cd ..
 goto main_menu
 
 :stop_gateway
 echo.
 echo Stopping Kong Gateway...
-cd gateway
-docker-compose -f docker-compose.yml down
-cd ..
+
+docker stop vno-kong-gateway >nul 2>&1
+if errorlevel 1 (
+    echo [INFO] Container vno-kong-gateway is not running
+) else (
+    echo [OK] Stopped vno-kong-gateway
+)
+
+docker rm vno-kong-gateway >nul 2>&1
+if not errorlevel 1 (
+    echo [OK] Removed vno-kong-gateway
+)
+
 echo.
 pause
 goto main_menu

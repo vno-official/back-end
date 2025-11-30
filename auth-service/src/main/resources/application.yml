@@ -1,33 +1,24 @@
 quarkus:
   http:
     port: 8080
+  datasource:
+    db-kind: postgresql
+    password: "npg_GMfXtR8H2nkK"
+    username: neondb_owner
+    jdbc:
+      url: "jdbc:postgresql://ep-flat-feather-a1vmt3a1-pooler.ap-southeast-1.aws.neon.tech/vno-auths?sslmode=require&channelBinding=require"
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+    schema-management:
+      strategy: drop-and-create
+    log:
+      sql: true  # Set to true for debugging
   smallrye-jwt:
     sign:
-      key: "7nVyLZkIFSXx7e1t96VK3MVaGdqjaCqqIlvJ1kA1vdJ"
+      key: 7nVyLZkIFSXx7e1t96VK3MVaGdqjaCqqIlvJ1kA1vdJ
       algorithm: HS256
-    # sign:
-    #   key-location: privateKey.pem   # RS256 (production)
-
-  datasource:
-    username: neondb_owner
-    password: "npg_GMfXtR8H2nkK"
-    jdbc:
-      url: jdbc:postgresql://ep-flat-feather-a1vmt3a1-pooler.ap-southeast-1.aws.neon.tech/vno-auth
-
-# mp.jwt config
 mp:
   jwt:
     verify:
-      issuer: "https://example.com/issuer"
-      # publickey:
-      #   location: publicKey.pem
-
-# quarkus:
-#   native:
-#     resources:
-#       includes: publicKey.pem
-
-quarkus:
-  hibernate-orm:
-    schema-management:
-      strategy: update
+      issuer: https://example.com/issuer

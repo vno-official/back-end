@@ -2,15 +2,18 @@ quarkus:
   http:
     port: 8081
   datasource:
-    password: npg_GMfXtR8H2nkK
+    db-kind: postgresql
+    password: "npg_GMfXtR8H2nkK"
     username: neondb_owner
     jdbc:
-      url: jdbc:postgresql://ep-flat-feather-a1vmt3a1-pooler.ap-southeast-1.aws.neon.tech/vno-users
+      url: "jdbc:postgresql://ep-flat-feather-a1vmt3a1-pooler.ap-southeast-1.aws.neon.tech/vno-users?sslmode=require&channelBinding=require"
   hibernate-orm:
+    database:
+      generation: drop-and-create
     schema-management:
-      strategy: update  # Auto-create/update tables
+      strategy: drop-and-create
     log:
-      sql: false  # Set to true for debugging
+      sql: true  # Set to true for debugging
   smallrye-jwt:
     sign:
       key: 7nVyLZkIFSXx7e1t96VK3MVaGdqjaCqqIlvJ1kA1vdJ

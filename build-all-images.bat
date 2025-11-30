@@ -22,10 +22,16 @@ echo.
 REM Record start time
 set start_time=%time%
 
-REM Function to build a Docker image
-REM Parameters: ServiceName, ServicePath, ImageName, DockerfilePath
+echo.
+echo [IMPORTANT] Building Gradle artifacts first to ensure latest config is used...
+echo.
 
 echo Building Auth Service...
+call gradlew :auth-service:build -x test
+if errorlevel 1 (
+    echo [ERROR] Failed to build Auth Service artifacts
+    exit /b 1
+)
 cd auth-service
 docker build -f src/main/docker/Dockerfile.jvm -t vno-auth-service:latest . >nul 2>&1
 if errorlevel 1 (
@@ -38,6 +44,11 @@ cd ..
 echo.
 
 echo Building User Service...
+call gradlew :user-service:build -x test
+if errorlevel 1 (
+    echo [ERROR] Failed to build User Service artifacts
+    exit /b 1
+)
 cd user-service
 docker build -f src/main/docker/Dockerfile.jvm -t vno-user-service:latest . >nul 2>&1
 if errorlevel 1 (
@@ -50,6 +61,11 @@ cd ..
 echo.
 
 echo Building Note Service...
+call gradlew :note-service:build -x test
+if errorlevel 1 (
+    echo [ERROR] Failed to build Note Service artifacts
+    exit /b 1
+)
 cd note-service
 docker build -f src/main/docker/Dockerfile.jvm -t vno-note-service:latest . >nul 2>&1
 if errorlevel 1 (
@@ -62,6 +78,11 @@ cd ..
 echo.
 
 echo Building Realtime Collab Service...
+call gradlew :realtime-collab-service:build -x test
+if errorlevel 1 (
+    echo [ERROR] Failed to build Realtime Collab Service artifacts
+    exit /b 1
+)
 cd realtime-collab-service
 docker build -f src/main/docker/Dockerfile.jvm -t vno-realtime-collab-service:latest . >nul 2>&1
 if errorlevel 1 (
@@ -74,6 +95,11 @@ cd ..
 echo.
 
 echo Building Notification Producer...
+call gradlew :notification-service:producer:build -x test
+if errorlevel 1 (
+    echo [ERROR] Failed to build Notification Producer artifacts
+    exit /b 1
+)
 cd notification-service
 docker build -f producer/src/main/docker/Dockerfile.jvm -t vno-notification-producer:latest . >nul 2>&1
 if errorlevel 1 (
@@ -86,6 +112,11 @@ cd ..
 echo.
 
 echo Building Notification Processor...
+call gradlew :notification-service:processor:build -x test
+if errorlevel 1 (
+    echo [ERROR] Failed to build Notification Processor artifacts
+    exit /b 1
+)
 cd notification-service
 docker build -f processor/src/main/docker/Dockerfile.jvm -t vno-notification-processor:latest . >nul 2>&1
 if errorlevel 1 (
