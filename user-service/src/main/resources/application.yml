@@ -6,6 +6,11 @@ quarkus:
     username: neondb_owner
     jdbc:
       url: jdbc:postgresql://ep-flat-feather-a1vmt3a1-pooler.ap-southeast-1.aws.neon.tech/vno-users
+  hibernate-orm:
+    schema-management:
+      strategy: update  # Auto-create/update tables
+    log:
+      sql: false  # Set to true for debugging
   smallrye-jwt:
     sign:
       key: 7nVyLZkIFSXx7e1t96VK3MVaGdqjaCqqIlvJ1kA1vdJ

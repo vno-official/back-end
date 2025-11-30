@@ -64,3 +64,53 @@ services:
           - /api/notifications/processor
         strip_path: false
         preserve_host: false
+
+  # ==================== OpenAPI Endpoints ====================
+
+  - name: auth-service-openapi
+    url: http://host.docker.internal:8080/q/openapi
+    routes:
+      - name: auth-openapi-route
+        paths:
+          - /api/auth/openapi
+        strip_path: true
+
+  - name: user-service-openapi
+    url: http://host.docker.internal:8081/q/openapi
+    routes:
+      - name: user-openapi-route
+        paths:
+          - /api/users/openapi
+        strip_path: true
+
+  - name: note-service-openapi
+    url: http://host.docker.internal:8082/q/openapi
+    routes:
+      - name: note-openapi-route
+        paths:
+          - /api/notes/openapi
+        strip_path: true
+
+  - name: realtime-collab-service-openapi
+    url: http://host.docker.internal:8083/q/openapi
+    routes:
+      - name: realtime-collab-openapi-route
+        paths:
+          - /api/collab/openapi
+        strip_path: true
+
+  - name: notification-producer-openapi
+    url: http://host.docker.internal:8084/q/openapi
+    routes:
+      - name: notification-producer-openapi-route
+        paths:
+          - /api/notifications/openapi
+        strip_path: true
+
+  - name: notification-processor-openapi
+    url: http://host.docker.internal:8085/q/openapi
+    routes:
+      - name: notification-processor-openapi-route
+        paths:
+          - /api/notifications/processor/openapi
+        strip_path: true

@@ -1,0 +1,39 @@
+# Dev mode Dockerfile - Runs Quarkus in development mode with Dev UI
+# This provides live reload and Quarkus Dev UI at /q/dev
+
+FROM eclipse-temurin:21-jdk-alpine
+
+# Install curl for healthchecks
+RUN apk add --no-cache curl
+
+# Set working directory
+WORKDIR /work/app
+
+# Copy Gradle wrapper and root build files
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
+COPY gradle.properties .
+
+# Copy ALL service directories (needed for dependencies)
+# Or at least the specific service directory
+COPY auth-service auth-service
+COPY user-service user-service
+COPY note-service note-service
+COPY realtime-collab-service realtime-collab-service
+COPY notification-service notification-service
+COPY common-observability common-observability
+COPY common-openapi common-openapi
+
+# Expose ports
+# 8080 - Application
+# 5005 - Debug port
+EXPOSE 8080 5005
+
+# Set environment for dev mode
+ENV QUARKUS_PROFILE=dev
+ENV QUARKUS_LOG_LEVEL=DEBUG
+
+# Run in dev mode for specific project
+ENTRYPOINT ["./gradlew", ":auth-service:quarkusDev", "-Dquarkus.http.host=0.0.0.0", "-Ddebug=5005"]

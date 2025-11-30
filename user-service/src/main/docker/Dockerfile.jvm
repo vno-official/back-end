@@ -6,9 +6,10 @@ FROM eclipse-temurin:21-jre-alpine
 # Configure JVM options
 # Use 80% of container memory for heap
 # Use JBoss LogManager for Quarkus logging
-# Cấu hình DB URL trỏ về host.docker.internal để truy cập DB trên máy host (Windows)
-ENV JAVA_OPTS="-XX:MaxRAMPercentage=80.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager" \
-    QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://host.docker.internal:5432/vno_users
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=80.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+
+# Note: Database URL is configured in application.yml (Neon PostgreSQL)
+# No need to override here - container will use external Neon DB
 
 EXPOSE 8081
 WORKDIR /work/app

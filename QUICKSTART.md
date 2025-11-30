@@ -126,6 +126,45 @@ REM Check routes
 curl http://localhost:8001/routes
 ```
 
+## 🗄️ Database (PostgreSQL)
+
+### Start PostgreSQL
+```cmd
+cd gateway
+docker-compose -f docker-compose-database.yml up -d
+```
+
+**Creates:**
+- PostgreSQL on port 5432
+- Databases: vno_auth, vno_users, vno_notes
+- PgAdmin UI: http://localhost:5050
+
+**Credentials:**
+```
+DB User: vno_admin
+DB Password: vno_password_2025
+
+PgAdmin: admin@vno.local / admin
+```
+
+### Verify Tables
+```cmd
+REM Connect to database
+docker exec -it vno-postgres psql -U vno_admin -d vno_auth
+
+REM List tables
+\dt
+
+REM Exit
+\q
+```
+
+### Stop PostgreSQL
+```cmd
+cd gateway
+docker-compose -f docker-compose-database.yml down
+```
+
 ## 📊 Service Endpoints
 
 ### Direct Access

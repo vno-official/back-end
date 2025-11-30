@@ -1,0 +1,160 @@
+version: "3.8"
+
+# VNO Backend - Development Environment
+# Runs services in Quarkus Dev Mode with Live Reload & Dev UI
+
+networks:
+  vno-network:
+    driver: bridge
+
+services:
+  # ==================== VNO Services (Dev Mode) ====================
+  
+  # Auth Service - Port 8080 (Debug 5005)
+  vno-auth-service-dev:
+    build:
+      context: ..
+      dockerfile: auth-service/src/main/docker/Dockerfile.dev
+    container_name: vno-auth-service-dev
+    networks:
+      - vno-network
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    volumes:
+      # Mount source code for live reload
+      - ../auth-service:/work/app/auth-service
+      # Avoid mounting build artifacts to prevent conflicts
+      - /work/app/auth-service/build
+      - /work/app/auth-service/.gradle
+    environment:
+      JAVA_OPTS: "-Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+    restart: no
+
+  # User Service - Port 8081 (Debug 5006)
+  vno-user-service-dev:
+    build:
+      context: ..
+      dockerfile: user-service/src/main/docker/Dockerfile.dev
+    container_name: vno-user-service-dev
+    networks:
+      - vno-network
+    ports:
+      - "8081:8081"
+      - "5006:5006"
+    volumes:
+      - ../user-service:/work/app/user-service
+      - /work/app/user-service/build
+      - /work/app/user-service/.gradle
+    environment:
+      JAVA_OPTS: "-Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+    restart: no
+
+  # Note Service - Port 8082 (Debug 5007)
+  vno-note-service-dev:
+    build:
+      context: ..
+      dockerfile: note-service/src/main/docker/Dockerfile.dev
+    container_name: vno-note-service-dev
+    networks:
+      - vno-network
+    ports:
+      - "8082:8082"
+      - "5007:5007"
+    volumes:
+      - ../note-service:/work/app/note-service
+      - /work/app/note-service/build
+      - /work/app/note-service/.gradle
+    environment:
+      JAVA_OPTS: "-Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+    restart: no
+
+  # Realtime Collab Service - Port 8083 (Debug 5008)
+  vno-realtime-collab-service-dev:
+    build:
+      context: ..
+      dockerfile: realtime-collab-service/src/main/docker/Dockerfile.dev
+    container_name: vno-realtime-collab-service-dev
+    networks:
+      - vno-network
+    ports:
+      - "8083:8083"
+      - "5008:5008"
+    volumes:
+      - ../realtime-collab-service:/work/app/realtime-collab-service
+      - /work/app/realtime-collab-service/build
+      - /work/app/realtime-collab-service/.gradle
+    environment:
+      JAVA_OPTS: "-Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+    restart: no
+
+  # Notification Producer - Port 8084 (Debug 5009)
+  vno-notification-producer-dev:
+    build:
+      context: ..
+      dockerfile: notification-service/producer/src/main/docker/Dockerfile.dev
+    container_name: vno-notification-producer-dev
+    networks:
+      - vno-network
+    ports:
+      - "8084:8084"
+      - "5009:5009"
+    volumes:
+      - ../notification-service/producer:/work/app/notification-service/producer
+      - /work/app/notification-service/producer/build
+      - /work/app/notification-service/producer/.gradle
+    environment:
+      JAVA_OPTS: "-Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+    restart: no
+
+  # Notification Processor - Port 8085 (Debug 5010)
+  vno-notification-processor-dev:
+    build:
+      context: ..
+      dockerfile: notification-service/processor/src/main/docker/Dockerfile.dev
+    container_name: vno-notification-processor-dev
+    networks:
+      - vno-network
+    ports:
+      - "8085:8085"
+      - "5010:5010"
+    volumes:
+      - ../notification-service/processor:/work/app/notification-service/processor
+      - /work/app/notification-service/processor/build
+      - /work/app/notification-service/processor/.gradle
+    environment:
+      JAVA_OPTS: "-Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+    restart: no
+
+  # ==================== Kong Gateway ====================
+  
+  kong:
+    image: kong/kong-gateway:3.8.0.0
+    container_name: vno-kong-gateway-dev
+    networks:
+      - vno-network
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      KONG_ADMIN_GUI_URL: http://localhost:8002
+      KONG_ADMIN_GUI_LISTEN: 0.0.0.0:8002
+      KONG_PROXY_LISTEN: 0.0.0.0:8000, 0.0.0.0:8443 ssl
+      KONG_LOG_LEVEL: info
+    volumes:
+      # Use the Docker config because services are in the same network
+      # BUT we need to update kong-docker.yml to use the -dev hostnames if we change container names
+      # OR we can keep container names same as prod but I added -dev suffix to distinguish
+      # Let's check kong-docker.yml content first.
+      - ./kong-dev.yml:/usr/local/kong/declarative/kong.yml:ro
+    ports:
+      - "8000:8000"
+      - "8443:8443"
+      - "8001:8001"
+      - "8444:8444"
+      - "8002:8002"
+      - "8445:8445"
+    depends_on:
+      - vno-auth-service-dev
+      - vno-user-service-dev
+    restart: no

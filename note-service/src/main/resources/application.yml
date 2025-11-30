@@ -6,9 +6,9 @@ quarkus:
       sql: true
     sql-load-script: import.sql
     schema-management:
-      strategy: create
+      strategy: update  # Changed from 'create' to 'update' for safer migration
   datasource:
     username: vno_auth_2025
     password: vno@auth-2025
     reactive:
-      url: vertx-reactive:postgresql://localhost/vno_auths
+      url: vertx-reactive:postgresql://localhost/vno_notes  # Fixed: should be vno_notes, not vno_auths

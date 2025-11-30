@@ -14,16 +14,21 @@ echo.
 echo 1. Start a service
 echo 2. Stop a service
 echo 3. View running containers
-echo 4. View logs
-echo 5. Exit
+echo 5. Start Kong Gateway (Standalone)
+echo 6. Stop Kong Gateway (Standalone)
+echo 7. View logs
+echo 8. Exit
 echo.
-set /p "action=Choose an action (1-5): "
+set /p "action=Choose an action (1-8): "
 
 if "%action%"=="1" goto start_service
 if "%action%"=="2" goto stop_service
 if "%action%"=="3" goto view_containers
 if "%action%"=="4" goto view_logs
-if "%action%"=="5" goto end
+if "%action%"=="5" goto start_gateway
+if "%action%"=="6" goto stop_gateway
+if "%action%"=="7" goto view_logs
+if "%action%"=="8" goto end
 echo Invalid choice. Please try again.
 timeout /t 2 >nul
 goto main_menu
@@ -267,6 +272,46 @@ for %%s in (%services%) do (
 
 echo.
 echo All services stopped!
+echo.
+pause
+goto main_menu
+
+:start_gateway
+cls
+echo.
+echo ========================================
+echo    Starting Kong Gateway (Standalone)...
+echo ========================================
+echo.
+echo This starts ONLY Kong Gateway using local config (kong.yml).
+echo.
+
+cd gateway
+docker-compose -f docker-compose.yml up -d
+
+if errorlevel 1 (
+    echo.
+    echo [ERROR] Failed to start Kong Gateway.
+    pause
+) else (
+    echo.
+    echo [OK] Kong Gateway started!
+    echo.
+    echo Access Points:
+    echo - Proxy: http://localhost:8000
+    echo - Admin: http://localhost:8001
+    echo.
+    pause
+)
+cd ..
+goto main_menu
+
+:stop_gateway
+echo.
+echo Stopping Kong Gateway...
+cd gateway
+docker-compose -f docker-compose.yml down
+cd ..
 echo.
 pause
 goto main_menu
