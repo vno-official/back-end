@@ -72,51 +72,51 @@ Scope: Phase 0 → 1 aligned with GOAL.md
 ## Phase 1 — Auth + Multi-tenant (True)
 
 ### Data Model (Flyway V2)
-- [ ] organizations(id, slug unique, name, created_at)
-- [ ] users(id, email unique, name, avatar, created_at)
-- [ ] memberships(id, organization_id fk, user_id fk, role enum[OWNER,ADMIN,MEMBER], unique(org,user))
-- [ ] invitations(id, organization_id fk, email, token, expires_at, accepted_at)
-- [ ] workspaces(id, organization_id fk, name, created_at)
-- [ ] pages(id, organization_id fk, workspace_id fk, parent_id fk, title, path/materialized_path, is_deleted, created_at, updated_at)
-- [ ] Indices and FKs created
+- [x] organizations(id, slug unique, name, created_at)
+- [x] users(id, email unique, name, avatar, created_at)
+- [x] memberships(id, organization_id fk, user_id fk, role enum[OWNER,ADMIN,MEMBER], unique(org,user))
+- [x] invitations(id, organization_id fk, email, token, expires_at, accepted_at)
+- [x] workspaces(id, organization_id fk, name, created_at)
+- [x] pages(id, organization_id fk, workspace_id fk, parent_id fk, title, path/materialized_path, is_deleted, created_at, updated_at)
+- [x] Indices and FKs created
 
 ### Tenant Isolation
-- [ ] Parse subdomain to resolve org slug
-- [ ] Lookup org_id by slug, set TenantContext per request
-- [ ] Base entity includes organization_id
-- [ ] Apply Hibernate filter/@Where to enforce org_id automatically
-- [ ] Ensure all queries go through Panache repos with tenant context
+- [x] Parse subdomain to resolve org slug
+- [x] Lookup org_id by slug, set TenantContext per request
+- [x] Base entity includes organization_id
+- [x] Apply Hibernate filter/@Where to enforce org_id automatically
+- [x] Ensure all queries go through Panache repos with tenant context
 
 ### Auth: Magic Link
-- [ ] POST /auth/magic-link → generate token (Redis TTL), send email via Resend
-- [ ] GET /auth/callback?token=... → validate, upsert user, bootstrap org if new
-- [ ] Issue JWT including org_id claim, expiry, refresh rules
+- [x] POST /auth/magic-link → generate token (Redis TTL), send email via Resend
+- [x] GET /auth/callback?token=... → validate, upsert user, bootstrap org if new
+- [x] Issue JWT including org_id claim, expiry, refresh rules
 
 ### Auth: Google OAuth (OIDC)
-- [ ] Configure OIDC client (Google) in application properties
+- [x] Configure OIDC client (Google) in application properties
 - [ ] Callback endpoint → same bootstrap flow, issue JWT
 - [ ] Map Google email → user record, derive default org slug from email domain
 
 ### Org Bootstrap
-- [ ] If user first-time: create organization (unique slug), membership OWNER
-- [ ] Create default workspace
-- [ ] Reserve subdomain (orgslug.vno.com)
+- [x] If user first-time: create organization (unique slug), membership OWNER
+- [x] Create default workspace
+- [x] Reserve subdomain (orgslug.vno.com)
 
 ### Roles & Membership (basic)
-- [ ] Role enum: OWNER/ADMIN/MEMBER
-- [ ] Enforce with security annotations/interceptors
+- [x] Role enum: OWNER/ADMIN/MEMBER
+- [x] Enforce with security annotations/interceptors
 
 ### API Surface (minimal)
-- [ ] GET /health, /ready
-- [ ] GET /me (requires JWT)
-- [ ] GET/POST /org
-- [ ] GET/POST /workspaces
-- [ ] GET/POST /pages (basic CRUD; soft delete flag present)
+- [x] GET /health, /ready
+- [x] GET /me (requires JWT)
+- [x] GET/POST /org
+- [x] GET/POST /workspaces
+- [x] GET/POST /pages (basic CRUD; soft delete flag present)
 - [ ] Error handling: exception mappers, validation errors
 
 ### Observability
-- [ ] Metrics enabled
-- [ ] Request logging
+- [x] Metrics enabled
+- [x] Request logging
 - [ ] Optional Sentry DSN wired
 
 ---
