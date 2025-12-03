@@ -44,14 +44,14 @@ quarkus:
       secret: ${GOOGLE_CLIENT_SECRET:MY_CLIENT_SECRET}
 
 # JWT Configuration
-mp:
-  jwt:
-    verify:
-      publickey:
-        location: none
-      issuer: vno-backend
-    sign:
-      key-location: none
+# mp:
+#   jwt:
+#     verify:
+#       publickey:
+#         location: none
+#       issuer: vno-backend
+#     sign:
+#       key-location: none
 
 smallrye:
   jwt:
@@ -65,11 +65,11 @@ app:
     secret: ${JWT_SIGN_KEY:dev-secret-key-change-in-production}
     expiry-hours: 168
 
-# Resend API
+# Resend Email Service Configuration
 resend:
-  api-key: ${RESEND_API_KEY:re_dev_placeholder_key}
-  from-email: ${RESEND_FROM_EMAIL:noreply@vno.com}
-
-# Enable CORS (flattened key)
-"quarkus.http.cors": true
-
+  # API key from https://resend.com/api-keys
+  api-key: ${RESEND_API_KEY:re_8GvmMDRp_9hGBUY3bhACkdrozRTzyc1cs}
+  # From email address (must be verified domain)
+  from-email: ${RESEND_FROM_EMAIL:vno-back-end.fly.dev}
+  # Optional: From name for emails
+  from-name: ${RESEND_FROM_NAME:VNO}

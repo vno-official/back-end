@@ -39,6 +39,9 @@ dependencies {
 
     // REST client for Resend API
     implementation("io.quarkus:quarkus-rest-client")
+    
+    // Resend Java SDK
+    implementation("com.resend:resend-java:3.0.0")
 
     // Validation
     implementation("io.quarkus:quarkus-hibernate-validator")
